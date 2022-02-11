@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+      - /app/.poetry
+    environment:
+      - BINANCE_ANALYST_API_KEY
+      - BINANCE_ANALYST_SECRET_KEY

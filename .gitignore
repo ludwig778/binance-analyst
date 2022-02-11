@@ -1,0 +1,12 @@
+dist
+
+*.py[cod]
+__pycache__/
+
+coverage_html*
+
+.coverage
+.poetry
+.pytest_cache
+
+.macro_counter_history
