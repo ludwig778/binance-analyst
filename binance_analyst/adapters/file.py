@@ -9,7 +9,7 @@ class FileAdapter:
 
     def create_dir(self) -> bool:
         if not self.dir_path.exists():
-            self.dir_path.mkdir()
+            self.dir_path.mkdir(parents=True)
 
             return True
 
