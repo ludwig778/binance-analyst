@@ -3,7 +3,7 @@ from pathlib import Path
 
 from pydantic import BaseModel
 
-TESTING: bool = bool(environ.get("TEST"))
+TESTING: bool = bool(environ.get("BINANCE_ANALYST_TEST"))
 
 CACHE_FOLDER: Path = Path.home() / ("test_cache_dir" if TESTING else "cache_dir")
 
