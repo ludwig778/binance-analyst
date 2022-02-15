@@ -6,7 +6,9 @@ from binance_analyst.adapters.file import FileAdapter
 class DataFrameFileAdapter(FileAdapter):
     def load(self, filename: str) -> DataFrame:
         df = read_json(self.dir_path / filename)
-        df.index.rename("timestamp", inplace=True)
+
+        df["timestamp"] = df.index
+        df.set_index("timestamp", inplace=True)
 
         return df
 
