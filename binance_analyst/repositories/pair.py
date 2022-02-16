@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import operator
-import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from typing import Dict
@@ -75,18 +74,18 @@ class PairRepository(AdaptersAwareRepository):
         elif interval not in self.possible_intervals:
             raise InvalidInterval(interval)
 
-        match = re.match(r"(?P<value>\d+)(?P<unit>\w{1})", interval).groupdict()
+        unit_value, interval_unit = interval[:-1], interval[-1]
 
         if interval == "1M":
             shift_delta = timedelta(days=30)
         elif interval == "1w":
             shift_delta = timedelta(weeks=1)
-        elif match["unit"] == "d":
-            shift_delta = timedelta(days=int(match["value"]))
-        elif match["unit"] == "h":
-            shift_delta = timedelta(hours=int(match["value"]))
-        elif match["unit"] == "m":
-            shift_delta = timedelta(minutes=int(match["value"]))
+        elif interval_unit == "d":
+            shift_delta = timedelta(days=int(unit_value))
+        elif interval_unit == "h":
+            shift_delta = timedelta(hours=int(unit_value))
+        elif interval_unit == "m":
+            shift_delta = timedelta(minutes=int(unit_value))
 
         start_datetime -= shift_delta
         end_datetime -= shift_delta
