@@ -1,7 +1,7 @@
 dist
 
 *.py[cod]
-__pycache__/
+__pycache__
 
 coverage_html*
 
@@ -9,4 +9,4 @@ coverage_html*
 .poetry
 .pytest_cache
 
-.macro_counter_history
+cache_dir
