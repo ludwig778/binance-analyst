@@ -3,10 +3,6 @@ from pathlib import Path
 
 from pydantic import BaseModel
 
-TESTING: bool = bool(environ.get("BINANCE_ANALYST_TEST"))
-
-CACHE_FOLDER: Path = Path.home() / ("test_cache_dir" if TESTING else "cache_dir")
-
 
 class BinanceSettings(BaseModel):
     api_url: str = "https://api.binance.com"
@@ -15,16 +11,26 @@ class BinanceSettings(BaseModel):
 
 
 class CacheSettings(BaseModel):
-    metadata_path_dir: Path = CACHE_FOLDER / "_metadata"
-    dataframe_path_dir: Path = CACHE_FOLDER / "_dataframes"
+    metadata_path_dir: Path
+    dataframe_path_dir: Path
 
 
 class Settings(BaseModel):
-    testing: bool = TESTING
+    testing: bool
 
+    cache_settings: CacheSettings
     binance_settings: BinanceSettings = BinanceSettings()
-    cache_settings: CacheSettings = CacheSettings()
 
 
 def get_settings() -> Settings:
-    return Settings()
+    testing: bool = bool(environ.get("BINANCE_ANALYST_TEST"))
+
+    cache_folder: Path = Path("tests", "fixtures") if testing else Path("/", "app", "cache_dir")
+
+    return Settings(
+        testing=testing,
+        cache_settings={
+            "metadata_path_dir": cache_folder / "metadata",
+            "dataframe_path_dir": cache_folder / "dataframes",
+        },
+    )
