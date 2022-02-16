@@ -66,16 +66,14 @@ class BinanceAdapter:
             self.weights = metadata.weights
 
             if (self.weights + weight).amount >= self.api_weight_threshold:
-                binance_weight_reset_delta = (
-                    metadata.server_time + timedelta(minutes=1)
-                ).replace(second=0, microsecond=0) - metadata.server_time
+                binance_weight_reset_delta = (metadata.server_time + timedelta(minutes=1)).replace(
+                    second=0, microsecond=0
+                ) - metadata.server_time
 
                 self._next_weight_reset = datetime.now() + binance_weight_reset_delta
 
         elif self._next_weight_reset:
-            to_wait = (
-                self._next_weight_reset - datetime.now() + timedelta(seconds=2)
-            ).total_seconds()
+            to_wait = (self._next_weight_reset - datetime.now() + timedelta(seconds=2)).total_seconds()
 
             self.weights.reset()
 
@@ -110,20 +108,14 @@ class BinanceAdapter:
     def get_exchange_info(self):
         self.add_weight(10)
 
-        return (
-            self.session.get(f"{self.settings.api_url}/api/v3/exchangeInfo")
-            .json()
-            .get("symbols")
-        )
+        return self.session.get(f"{self.settings.api_url}/api/v3/exchangeInfo").json().get("symbols")
 
     def get_metadata(self):
         response = self.session.get(f"{self.settings.api_url}/api/v3/time")
 
         return BinanceMetadata(
             server_time=response.json().get("serverTime"),
-            weights={
-                k: v for k, v in response.headers.items() if k.startswith("x-mbx-used")
-            },
+            weights={k: v for k, v in response.headers.items() if k.startswith("x-mbx-used")},
         )
 
     def get_time(self):
@@ -140,9 +132,7 @@ class BinanceAdapter:
                 "ask": float(ticker.get("askPrice")),
                 "bid": float(ticker.get("bidPrice")),
             }
-            for ticker in self.session.get(
-                f"{self.settings.api_url}/api/v3/ticker/bookTicker"
-            ).json()
+            for ticker in self.session.get(f"{self.settings.api_url}/api/v3/ticker/bookTicker").json()
         }
 
     def get_historical_klines(
@@ -163,9 +153,7 @@ class BinanceAdapter:
 
         while True:
             self.add_weight(1)
-            data_part = self.session.get(
-                f"{self.settings.api_url}/api/v3/klines", params=params
-            ).json()
+            data_part = self.session.get(f"{self.settings.api_url}/api/v3/klines", params=params).json()
 
             if data_part == []:
                 break
