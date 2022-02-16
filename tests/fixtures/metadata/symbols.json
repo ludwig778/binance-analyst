@@ -1,0 +1,294 @@
+{
+  "BNBBTC": [
+    "BNB",
+    "BTC"
+  ],
+  "BNBETH": [
+    "BNB",
+    "ETH"
+  ],
+  "BNBUSDT": [
+    "BNB",
+    "USDT"
+  ],
+  "BTCUSDT": [
+    "BTC",
+    "USDT"
+  ],
+  "ETHBTC": [
+    "ETH",
+    "BTC"
+  ],
+  "ETHUSDT": [
+    "ETH",
+    "USDT"
+  ],
+  "ADABNB": [
+    "ADA",
+    "BNB"
+  ],
+  "ADABTC": [
+    "ADA",
+    "BTC"
+  ],
+  "ADAETH": [
+    "ADA",
+    "ETH"
+  ],
+  "ADAUSDT": [
+    "ADA",
+    "USDT"
+  ],
+  "AVAXBNB": [
+    "AVAX",
+    "BNB"
+  ],
+  "AVAXBTC": [
+    "AVAX",
+    "BTC"
+  ],
+  "AVAXETH": [
+    "AVAX",
+    "ETH"
+  ],
+  "AVAXUSDT": [
+    "AVAX",
+    "USDT"
+  ],
+  "BATBNB": [
+    "BAT",
+    "BNB"
+  ],
+  "BATBTC": [
+    "BAT",
+    "BTC"
+  ],
+  "BATETH": [
+    "BAT",
+    "ETH"
+  ],
+  "BATUSDT": [
+    "BAT",
+    "USDT"
+  ],
+  "BCHBNB": [
+    "BCH",
+    "BNB"
+  ],
+  "BCHBTC": [
+    "BCH",
+    "BTC"
+  ],
+  "BCHUSDT": [
+    "BCH",
+    "USDT"
+  ],
+  "BNBBUSD": [
+    "BNB",
+    "BUSD"
+  ],
+  "BTCBUSD": [
+    "BTC",
+    "BUSD"
+  ],
+  "BUSDUSDT": [
+    "BUSD",
+    "USDT"
+  ],
+  "ETHBUSD": [
+    "ETH",
+    "BUSD"
+  ],
+  "CAKEBNB": [
+    "CAKE",
+    "BNB"
+  ],
+  "CAKEBTC": [
+    "CAKE",
+    "BTC"
+  ],
+  "CAKEUSDT": [
+    "CAKE",
+    "USDT"
+  ],
+  "DAIBNB": [
+    "DAI",
+    "BNB"
+  ],
+  "DAIBTC": [
+    "DAI",
+    "BTC"
+  ],
+  "DAIUSDT": [
+    "DAI",
+    "USDT"
+  ],
+  "ETHDAI": [
+    "ETH",
+    "DAI"
+  ],
+  "DOGEBNB": [
+    "DOGE",
+    "BNB"
+  ],
+  "DOGEBTC": [
+    "DOGE",
+    "BTC"
+  ],
+  "DOGEUSDT": [
+    "DOGE",
+    "USDT"
+  ],
+  "DOTBNB": [
+    "DOT",
+    "BNB"
+  ],
+  "DOTBTC": [
+    "DOT",
+    "BTC"
+  ],
+  "DOTETH": [
+    "DOT",
+    "ETH"
+  ],
+  "DOTUSDT": [
+    "DOT",
+    "USDT"
+  ],
+  "LINKBNB": [
+    "LINK",
+    "BNB"
+  ],
+  "LINKBTC": [
+    "LINK",
+    "BTC"
+  ],
+  "LINKETH": [
+    "LINK",
+    "ETH"
+  ],
+  "LINKUSDT": [
+    "LINK",
+    "USDT"
+  ],
+  "LTCBNB": [
+    "LTC",
+    "BNB"
+  ],
+  "LTCBTC": [
+    "LTC",
+    "BTC"
+  ],
+  "LTCETH": [
+    "LTC",
+    "ETH"
+  ],
+  "LTCUSDT": [
+    "LTC",
+    "USDT"
+  ],
+  "LUNABNB": [
+    "LUNA",
+    "BNB"
+  ],
+  "LUNABTC": [
+    "LUNA",
+    "BTC"
+  ],
+  "LUNAETH": [
+    "LUNA",
+    "ETH"
+  ],
+  "LUNAUSDT": [
+    "LUNA",
+    "USDT"
+  ],
+  "SHIBUSDT": [
+    "SHIB",
+    "USDT"
+  ],
+  "SHIBBUSD": [
+    "SHIB",
+    "BUSD"
+  ],
+  "SOLBNB": [
+    "SOL",
+    "BNB"
+  ],
+  "SOLBTC": [
+    "SOL",
+    "BTC"
+  ],
+  "SOLETH": [
+    "SOL",
+    "ETH"
+  ],
+  "SOLUSDT": [
+    "SOL",
+    "USDT"
+  ],
+  "THETABNB": [
+    "THETA",
+    "BNB"
+  ],
+  "THETABTC": [
+    "THETA",
+    "BTC"
+  ],
+  "THETAETH": [
+    "THETA",
+    "ETH"
+  ],
+  "THETAUSDT": [
+    "THETA",
+    "USDT"
+  ],
+  "UNIBNB": [
+    "UNI",
+    "BNB"
+  ],
+  "UNIBTC": [
+    "UNI",
+    "BTC"
+  ],
+  "UNIETH": [
+    "UNI",
+    "ETH"
+  ],
+  "UNIUSDT": [
+    "UNI",
+    "USDT"
+  ],
+  "XRPBNB": [
+    "XRP",
+    "BNB"
+  ],
+  "XRPBTC": [
+    "XRP",
+    "BTC"
+  ],
+  "XRPETH": [
+    "XRP",
+    "ETH"
+  ],
+  "XRPUSDT": [
+    "XRP",
+    "USDT"
+  ],
+  "XTZBNB": [
+    "XTZ",
+    "BNB"
+  ],
+  "XTZBTC": [
+    "XTZ",
+    "BTC"
+  ],
+  "XTZETH": [
+    "XTZ",
+    "ETH"
+  ],
+  "XTZUSDT": [
+    "XTZ",
+    "USDT"
+  ]
+}

@@ -1,18 +1,21 @@
 from pytest import fixture
 
 from binance_analyst.adapters import get_adapters
+from binance_analyst.core.settings import get_settings
+from binance_analyst.repositories import get_repositories
+from tests.fixtures import *  # noqa
 
 
-@fixture(scope="function", autouse=True)
+@fixture(scope="function")
+def settings():
+    return get_settings()
+
+
+@fixture(scope="function")
 def adapters():
-    adapters = get_adapters()
+    return get_adapters()
 
-    adapters.metadata.create_dir()
-    adapters.dataframe.create_dir()
 
-    adapters.metadata.save("symbols.json", {"lmao": "test"})
-
-    yield adapters
-
-    adapters.metadata.delete_dir()
-    adapters.dataframe.delete_dir()
+@fixture(scope="function")
+def repositories():
+    return get_repositories()

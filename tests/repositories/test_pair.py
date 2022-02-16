@@ -1,73 +1,71 @@
 from datetime import datetime
 
-from pandas import DataFrame, DatetimeIndex
-
-from binance_analyst.objects import Coin, Pair
 from binance_analyst.repositories import get_repositories
 
 
-def test_pair_repository_load(monkeypatch):
+def test_pair_repository_load_with_cache(repositories):
+    retrieved_pairs = repositories.pair.load()
+
+    assert len(retrieved_pairs) == 73
+
+
+def test_pair_repository_load_without_cache(repositories, pairs, monkeypatch):
+    monkeypatch.setattr("binance_analyst.adapters.FileAdapter.exists", lambda *_: False)
     monkeypatch.setattr(
-        "binance_analyst.adapters.BinanceAdapter.get_historical_klines",
-        lambda *_: [
-            [
-                1644451200000,  # Open time
-                "0.07309600",  # Open
-                "0.07340600",  # High
-                "0.07015900",  # Low
-                "0.07064200",  # Close
-                "73001.58190000",  # Volume
-                1644537599999,  # Close time
-                "5227.37648417",  # Quote asset volume
-                179510,  # Trades
-                "36718.53130000",  # Taker buy base asset volume
-                "2627.81608618",  # Taker buy base asset volume
-                "0",  # Ignore
-            ],
-            [
-                1644537600000,
-                "0.07063800",
-                "0.07165700",
-                "0.06873300",
-                "0.06887200",
-                "47333.19550000",
-                1644623999999,
-                "3344.60108893",
-                132050,
-                "23683.64340000",
-                "1674.16354128",
-                "0",
-            ],
+        "binance_analyst.adapters.BinanceAdapter.get_exchange_info",
+        lambda _: [
+            {
+                "symbol": symbol,
+                "baseAsset": pair.base.name,
+                "quoteAsset": pair.quote.name,
+            }
+            for symbol, pair in pairs.items()
         ],
     )
+    retrieved_pairs = repositories.pair.load()
 
-    pair = Pair(Coin("ETH"), Coin("BTC"))
+    assert len(retrieved_pairs) == 73
 
-    klines = get_repositories().pair.get_klines(pair)
+    assert retrieved_pairs == pairs
 
-    forged = DataFrame(
-        [
-            {
-                "timestamp": datetime(2022, 2, 11),
-                "open": 0.073096,
-                "high": 0.073406,
-                "low": 0.070159,
-                "close": 0.070642,
-                "volumes": 73001.5819,
-                "trades": 179510.0,
-            },
-            {
-                "timestamp": datetime(2022, 2, 12),
-                "open": 0.070638,
-                "high": 0.071657,
-                "low": 0.068733,
-                "close": 0.068872,
-                "volumes": 47333.1955,
-                "trades": 132050.0,
-            },
-        ],
+
+def test_pair_repository_filter(pairs):
+    pair_repo = get_repositories().pair
+
+    assert len(pair_repo.filter(pairs, coin_strs=["BTC", "ETH", "BNB", "USDT", "BUSD"])) == 73
+    assert len(pair_repo.filter(pairs, coin_strs=["BTC", "ETH"])) == 36
+    assert len(pair_repo.filter(pairs, coin_strs=["BTC"])) == 20
+    assert len(pair_repo.filter(pairs, coin_strs=["BTC", "ETH"], exclusive=True)) == 1
+    assert len(pair_repo.filter(pairs, coin_strs=["BTC", "FAKECOIN"], exclusive=True)) == 0
+
+
+def test_pair_repository_load_dataframes(repositories, pairs):
+    dataframes = repositories.pair.load_dataframes(
+        pairs,
+        interval="1d",
+        start_datetime=datetime(2017, 1, 1),
+        end_datetime=datetime(2022, 1, 1),
     )
-    forged["timestamp"] = DatetimeIndex(forged["timestamp"])
-    forged.set_index("timestamp", inplace=True)
 
-    assert klines.equals(forged)
+    assert len(dataframes) == 73
+
+    def get_datetime_range(df):
+        return (
+            df.index[0].to_pydatetime(),
+            df.index[-1].to_pydatetime(),
+        )
+
+    assert get_datetime_range(dataframes["BNBBTC"]) == (
+        datetime(2017, 7, 15),
+        datetime(2022, 1, 1),
+    )
+    assert get_datetime_range(dataframes["LINKUSDT"]) == (
+        datetime(2019, 1, 17),
+        datetime(2022, 1, 1),
+    )
+    assert get_datetime_range(dataframes["LUNABTC"]) == (
+        datetime(2020, 8, 20),
+        datetime(2022, 1, 1),
+    )
+
+    assert dataframes["XTZETH"].empty
