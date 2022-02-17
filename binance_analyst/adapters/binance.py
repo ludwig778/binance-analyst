@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from time import sleep
 
 import requests
-from cachetools import TTLCache, cached
 from pydantic import BaseModel, Field
 
 from binance_analyst.exceptions import BinanceError, InvalidInterval, WrongDatetimeRange
@@ -121,7 +120,6 @@ class BinanceAdapter:
 
         return response.json()
 
-    @cached(cache=TTLCache(maxsize=1, ttl=600))
     def get_exchange_info(self):
         self.add_weight(10)
 
@@ -140,7 +138,6 @@ class BinanceAdapter:
 
         return self._get_time()
 
-    @cached(cache=TTLCache(maxsize=1, ttl=600))
     def get_prices(self):
         self.add_weight(2)
 
