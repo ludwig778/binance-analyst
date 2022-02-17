@@ -18,7 +18,7 @@ def trim_dataframes(df, perc=50) -> DataFrame:
     #    if check_nan_values(rrow) <= 0:
     #        break
 
-    df = df.loc[row.name:]  # :rrow.name]
+    df = df.loc[row.name :]  # noqa :rrow.name]
 
     return df
 
