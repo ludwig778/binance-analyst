@@ -90,6 +90,13 @@ class PairRepository(AdaptersAwareRepository):
         start_datetime -= shift_delta
         end_datetime -= shift_delta
 
+        raw_klines = self.adapters.binance.get_historical_klines(
+            symbol=pair.symbol,
+            interval=interval,
+            start_datetime=start_datetime,
+            end_datetime=end_datetime,
+        )
+
         klines = [
             {
                 "timestamp": datetime.fromtimestamp((kline_data[6] + 1) / 1000),
@@ -100,12 +107,7 @@ class PairRepository(AdaptersAwareRepository):
                 "volumes": float(kline_data[5]),
                 "trades": kline_data[8],
             }
-            for kline_data in self.adapters.binance.get_historical_klines(
-                symbol=pair.symbol,
-                interval=interval,
-                start_datetime=start_datetime,
-                end_datetime=end_datetime,
-            )
+            for kline_data in raw_klines
         ]
 
         df = DataFrame(klines)
@@ -116,6 +118,7 @@ class PairRepository(AdaptersAwareRepository):
 
             if interval == "1d":
                 df = df.resample("D").mean()
+                df.index.freq = None
 
         return df
 
@@ -146,12 +149,9 @@ class PairRepository(AdaptersAwareRepository):
         if self.adapters.dataframe.exists(filename) and not no_cache:
             df = self.adapters.dataframe.load(filename)
 
-            if not full:
-                return df
-
-            if df.empty:
-                df = self.get_klines(pair, interval, start_datetime, end_datetime)
-            else:
+            if df.empty and full:
+                df = self._get_klines(pair, interval, start_datetime, end_datetime)
+            elif full:
                 first_datetime = df.index[0].to_pydatetime()
                 last_datetime = df.index[-1].to_pydatetime()
 
@@ -180,6 +180,10 @@ class PairRepository(AdaptersAwareRepository):
                 start_datetime=start_datetime,
                 end_datetime=end_datetime,
             )
+
+        # Fix, trades are integers
+        if not df.empty:
+            df["trades"] = df["trades"].astype(int)
 
         if saving:
             self.adapters.dataframe.save(filename, df)
