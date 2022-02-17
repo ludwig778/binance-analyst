@@ -3,6 +3,7 @@ import hmac
 from copy import deepcopy
 from datetime import datetime, timedelta
 from time import sleep
+from typing import Dict
 
 import requests
 from pydantic import BaseModel, Field
@@ -37,6 +38,15 @@ class BinanceWeights(BaseModel):
 class BinanceMetadata(BaseModel):
     weights: BinanceWeights
     server_time: datetime
+
+
+class TickerPrice(BaseModel):
+    ask: float = Field(alias="askPrice", default=0)
+    bid: float = Field(alias="bidPrice", default=0)
+
+
+class TickerPrices(BaseModel):
+    prices: Dict[str, TickerPrice]
 
 
 class BinanceAdapter:
@@ -141,13 +151,14 @@ class BinanceAdapter:
     def get_prices(self):
         self.add_weight(2)
 
-        return {
-            ticker.get("symbol"): {
-                "ask": float(ticker.get("askPrice")),
-                "bid": float(ticker.get("bidPrice")),
+        return TickerPrices(
+            prices={
+                ticker_data.get("symbol"): ticker_data
+                for ticker_data in self.session.get(
+                    f"{self.settings.api_url}/api/v3/ticker/bookTicker"
+                ).json()
             }
-            for ticker in self.session.get(f"{self.settings.api_url}/api/v3/ticker/bookTicker").json()
-        }
+        )
 
     def get_historical_klines(
         self,
