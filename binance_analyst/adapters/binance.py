@@ -103,8 +103,8 @@ class BinanceAdapter:
     def get_account_info(self):
         self.add_weight(1)
 
-        metadata = self.get_metadata()
-        params = f"timestamp={metadata.server_time}"
+        server_time = self.get_metadata().server_time.strftime("%s000")
+        params = f"timestamp={server_time}"
 
         signature = hmac.new(
             self.settings.secret_key.encode("utf-8"),
@@ -116,7 +116,7 @@ class BinanceAdapter:
 
         response = self.session.get(
             f"{self.settings.api_url}/api/v3/account",
-            params={"timestamp": metadata.server_time, "signature": signature},
+            params={"timestamp": server_time, "signature": signature},
         )
 
         return response.json()
@@ -181,6 +181,7 @@ class BinanceAdapter:
 
         start_datetime -= shift_delta
         end_datetime -= shift_delta
+
         data = []
         params = {
             "symbol": symbol,
