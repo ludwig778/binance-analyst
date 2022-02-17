@@ -8,7 +8,7 @@ import requests
 from cachetools import TTLCache, cached
 from pydantic import BaseModel, Field
 
-from binance_analyst.exceptions import BinanceError
+from binance_analyst.exceptions import BinanceError, InvalidInterval, WrongDatetimeRange
 
 
 class BinanceWeights(BaseModel):
@@ -42,6 +42,23 @@ class BinanceMetadata(BaseModel):
 
 class BinanceAdapter:
     api_weight_threshold = 1150
+    api_possible_intervals = [
+        "1m",
+        "3m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "4h",
+        "6h",
+        "8h",
+        "12h",
+        "1d",
+        "3d",
+        "1w",
+        "1M",
+    ]
 
     def __init__(self, settings):
         self.settings = settings
@@ -142,6 +159,28 @@ class BinanceAdapter:
         start_datetime: datetime,
         end_datetime: datetime,
     ):
+        if start_datetime < datetime(2000, 1, 1):
+            raise WrongDatetimeRange(start_datetime)
+        elif start_datetime < datetime(2000, 1, 1):
+            raise WrongDatetimeRange(end_datetime)
+        elif interval not in self.api_possible_intervals:
+            raise InvalidInterval(interval)
+
+        unit_value, interval_unit = interval[:-1], interval[-1]
+
+        if interval == "1M":
+            shift_delta = timedelta(days=30)
+        elif interval == "1w":
+            shift_delta = timedelta(weeks=1)
+        elif interval_unit == "d":
+            shift_delta = timedelta(days=int(unit_value))
+        elif interval_unit == "h":
+            shift_delta = timedelta(hours=int(unit_value))
+        elif interval_unit == "m":
+            shift_delta = timedelta(minutes=int(unit_value))
+
+        start_datetime -= shift_delta
+        end_datetime -= shift_delta
         data = []
         params = {
             "symbol": symbol,

@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import operator
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Dict
 
 from pandas import DataFrame, DatetimeIndex, concat
 
-from binance_analyst.exceptions import InvalidInterval, WrongDatetimeRange
 from binance_analyst.objects import Coin, Pair
 from binance_analyst.repositories.base import AdaptersAwareRepository
 
@@ -18,24 +17,6 @@ datetime_format = "%Y-%m-%d_%H:%M:%S"
 
 
 class PairRepository(AdaptersAwareRepository):
-    possible_intervals = [
-        "1m",
-        "3m",
-        "5m",
-        "15m",
-        "30m",
-        "1h",
-        "2h",
-        "4h",
-        "6h",
-        "8h",
-        "12h",
-        "1d",
-        "3d",
-        "1w",
-        "1M",
-    ]
-
     def load(self) -> Pairs:
         filename = "symbols.json"
 
@@ -67,28 +48,6 @@ class PairRepository(AdaptersAwareRepository):
         start_datetime: datetime = datetime(2000, 1, 1),
         end_datetime: datetime = datetime.now(),
     ) -> DataFrame:
-        if start_datetime < datetime(2000, 1, 1):
-            raise WrongDatetimeRange(start_datetime)
-        elif start_datetime < datetime(2000, 1, 1):
-            raise WrongDatetimeRange(end_datetime)
-        elif interval not in self.possible_intervals:
-            raise InvalidInterval(interval)
-
-        unit_value, interval_unit = interval[:-1], interval[-1]
-
-        if interval == "1M":
-            shift_delta = timedelta(days=30)
-        elif interval == "1w":
-            shift_delta = timedelta(weeks=1)
-        elif interval_unit == "d":
-            shift_delta = timedelta(days=int(unit_value))
-        elif interval_unit == "h":
-            shift_delta = timedelta(hours=int(unit_value))
-        elif interval_unit == "m":
-            shift_delta = timedelta(minutes=int(unit_value))
-
-        start_datetime -= shift_delta
-        end_datetime -= shift_delta
 
         raw_klines = self.adapters.binance.get_historical_klines(
             symbol=pair.symbol,
@@ -158,7 +117,7 @@ class PairRepository(AdaptersAwareRepository):
                 if (
                     start_datetime < first_datetime
                     and not (
-                        pre_df := self.get_klines(pair, interval, start_datetime, first_datetime)
+                        pre_df := self._get_klines(pair, interval, start_datetime, first_datetime)
                     ).empty
                 ):
                     df = concat([pre_df, df])
@@ -167,10 +126,10 @@ class PairRepository(AdaptersAwareRepository):
                 if (
                     last_datetime < end_datetime
                     and not (
-                        post_df := self.get_klines(pair, interval, last_datetime, end_datetime)
+                        post_df := self._get_klines(pair, interval, last_datetime, end_datetime)
                     ).empty
                 ):
-                    df = concat([post_df, df])
+                    df = concat([df, post_df])
                     df = df[~df.index.duplicated()]
 
         else:
