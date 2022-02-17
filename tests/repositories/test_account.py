@@ -20,8 +20,8 @@ def test_account_repository_load(monkeypatch):
 
     assert len(account.coins) == 4
     assert account.coins == {
-        "BTC": CoinAmount(coin=Coin("BTC"), amount=1),
-        "LTC": CoinAmount(coin=Coin("LTC"), amount=2),
-        "ETH": CoinAmount(coin=Coin("ETH"), amount=3.5),
-        "BNB": CoinAmount(coin=Coin("BNB"), amount=10),
+        "BTC": CoinAmount(coin=Coin(name="BTC"), amount=1),
+        "LTC": CoinAmount(coin=Coin(name="LTC"), amount=2),
+        "ETH": CoinAmount(coin=Coin(name="ETH"), amount=3.5),
+        "BNB": CoinAmount(coin=Coin(name="BNB"), amount=10),
     }

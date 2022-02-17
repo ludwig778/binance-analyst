@@ -1,25 +1,24 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import field
 from typing import Dict
 
+from pydantic import BaseModel, Field
 
-@dataclass(unsafe_hash=True)
-class Coin:
+
+class Coin(BaseModel):
     name: str
 
     def to(self, coin: Coin) -> Pair:
         return Pair(self, coin)
 
 
-@dataclass(unsafe_hash=True)
-class CoinAmount:
+class CoinAmount(BaseModel):
     coin: Coin
     amount: float = 0.0
 
 
-@dataclass(unsafe_hash=True)
-class Pair:
+class Pair(BaseModel):
     base: Coin
     quote: Coin
 
@@ -28,6 +27,5 @@ class Pair:
         return self.base.name + self.quote.name
 
 
-@dataclass
-class Account:
-    coins: Dict[str, CoinAmount] = field(default_factory=dict)
+class Account(BaseModel):
+    coins: Dict[str, CoinAmount] = Field(default_factory=dict)

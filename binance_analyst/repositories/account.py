@@ -12,6 +12,6 @@ class AccountRepository(AdaptersAwareRepository):
 
             if amount:
                 name = coin.get("asset")
-                coins[name] = CoinAmount(Coin(name), amount)
+                coins[name] = CoinAmount(coin=Coin(name=name), amount=amount)
 
         return Account(coins=coins)

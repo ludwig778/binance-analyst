@@ -31,7 +31,10 @@ class PairRepository(AdaptersAwareRepository):
             }
             self.adapters.metadata.save(filename, data)
 
-        return {symbol: Pair(*map(Coin, coins)) for symbol, coins in data.items()}
+        return {
+            symbol: Pair(base=Coin(name=coins[0]), quote=Coin(name=coins[1]))
+            for symbol, coins in data.items()
+        }
 
     def filter(self, pairs: Pairs, coin_strs: list[str], exclusive=False) -> Pairs:
         op = operator.__and__ if exclusive else operator.__or__
