@@ -38,10 +38,10 @@ test_on:
 	pytest ${TEST_ARGS} ${ARGS}
 
 cov:
-	pytest ${TEST_ARGS} --cov=backend
+	pytest ${TEST_ARGS} --cov=binance_analyst
 
 cov_html:
-	pytest ${TEST_ARGS} --cov=backend --cov-append --cov-report html:coverage_html
+	pytest ${TEST_ARGS} --cov=binance_analyst --cov-report html:coverage_html
 
 clean:
 	rm -rf coverage_html .coverage .mypy_cache .pytest_cache
