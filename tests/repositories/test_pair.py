@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from binance_analyst.repositories import get_repositories
+from tests.utils import equal_dataframes
 
 
 def test_pair_repository_load_with_cache(repositories):
@@ -69,3 +70,48 @@ def test_pair_repository_load_dataframes(repositories, pairs):
     )
 
     assert dataframes["XTZETH"].empty
+
+
+def test_pair_repository_get_klines(repositories, pairs, adapters, dataframes_1d, monkeypatch):
+    def mock_get_historical_klines(*_args, **_kwargs):
+        return adapters.metadata.load("BNBBTC_1d_first_week_of_2021.json")
+
+    monkeypatch.setattr(
+        "binance_analyst.adapters.BinanceAdapter.get_historical_klines", mock_get_historical_klines
+    )
+
+    dataframe = repositories.pair.get_klines(
+        pairs["BNBBTC"],
+        interval="1d",
+        start_datetime=datetime(2021, 1, 1),
+        end_datetime=datetime(2021, 1, 7),
+    )
+
+    assert equal_dataframes(dataframe, dataframes_1d["BNBBTC"]["2021-01-01":"2021-01-07"])
+
+
+def test_pair_repository_get_klines_full(repositories, pairs, adapters, dataframes_1d, monkeypatch):
+    def mock_get_historical_klines(*_args, start_datetime=None, end_datetime=None, **_kwargs):
+        if (start_datetime, end_datetime) == (datetime(2020, 12, 25), datetime(2021, 1, 1)):
+            return adapters.metadata.load("BNBBTC_1d_last_week_of_2020.json")
+        if (start_datetime, end_datetime) == (datetime(2021, 1, 7), datetime(2021, 1, 14)):
+            return adapters.metadata.load("BNBBTC_1d_second_week_of_2021.json")
+
+    monkeypatch.setattr("binance_analyst.adapters.DataFrameFileAdapter.exists", lambda *_: True)
+    monkeypatch.setattr(
+        "binance_analyst.adapters.DataFrameFileAdapter.load",
+        lambda *_: dataframes_1d["BNBBTC"]["2021-01-01":"2021-01-07"],
+    )
+    monkeypatch.setattr(
+        "binance_analyst.adapters.BinanceAdapter.get_historical_klines", mock_get_historical_klines
+    )
+
+    dataframe = repositories.pair.get_klines(
+        pairs["BNBBTC"],
+        interval="1d",
+        start_datetime=datetime(2020, 12, 25),
+        end_datetime=datetime(2021, 1, 14),
+        full=True,
+    )
+
+    assert equal_dataframes(dataframe, dataframes_1d["BNBBTC"]["2020-12-25":"2021-01-14"])
