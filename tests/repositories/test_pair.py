@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from binance_analyst.repositories import get_repositories
 from tests.utils import equal_dataframes
 
 
@@ -30,8 +29,8 @@ def test_pair_repository_load_without_cache(repositories, pairs, monkeypatch):
     assert retrieved_pairs == pairs
 
 
-def test_pair_repository_filter(pairs):
-    pair_repo = get_repositories().pair
+def test_pair_repository_filter(pairs, repositories):
+    pair_repo = repositories.pair
 
     assert len(pair_repo.filter(pairs, coin_strs=["BTC", "ETH", "BNB", "USDT", "BUSD"])) == 73
     assert len(pair_repo.filter(pairs, coin_strs=["BTC", "ETH"])) == 36
