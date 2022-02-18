@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import field
 from typing import Dict
 
 from pydantic import BaseModel, Field
