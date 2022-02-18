@@ -4,14 +4,16 @@ from pydantic import BaseModel
 
 from binance_analyst.adapters import get_adapters
 from binance_analyst.repositories.account import AccountRepository
+from binance_analyst.repositories.exchange import ExchangeRepository
 from binance_analyst.repositories.pair import PairRepository
 
-RepositoryInstance = Union[PairRepository, AccountRepository]
+RepositoryInstance = Union[AccountRepository, ExchangeRepository, PairRepository]
 
 
 class Repositories(BaseModel):
-    pair: PairRepository
     account: AccountRepository
+    exchange: ExchangeRepository
+    pair: PairRepository
 
     class Config:
         arbitrary_types_allowed = True
@@ -20,4 +22,8 @@ class Repositories(BaseModel):
 def get_repositories() -> Repositories:
     adapters = get_adapters()
 
-    return Repositories(pair=PairRepository(adapters), account=AccountRepository(adapters))
+    return Repositories(
+        account=AccountRepository(adapters),
+        exchange=ExchangeRepository(adapters),
+        pair=PairRepository(adapters),
+    )
