@@ -25,6 +25,9 @@ class Pair(BaseModel):
     def symbol(self):
         return self.base.name + self.quote.name
 
+    def revert(self):
+        return Pair(base=self.quote, quote=self.base)
+
 
 class Account(BaseModel):
     coins: Dict[str, CoinAmount] = Field(default_factory=dict)
