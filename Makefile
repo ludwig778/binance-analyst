@@ -26,7 +26,8 @@ mypy:
 piprot:
 	piprot pyproject.toml
 
-sure: lint isort piprot black
+format: isort black
+sure: lint mypy piprot
 
 debug:
 	while :; do inotifywait -e modify -r .;clear;make tests;sleep .1 ;done
