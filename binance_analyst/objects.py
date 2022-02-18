@@ -8,8 +8,8 @@ from pydantic import BaseModel, Field
 class Coin(BaseModel):
     name: str
 
-    def to(self, coin: Coin) -> Pair:
-        return Pair(self, coin)
+    def to(self, other: Coin) -> Pair:
+        return Pair(base=self, quote=other)
 
 
 class CoinAmount(BaseModel):
