@@ -8,3 +8,7 @@ class WrongDatetimeRange(Exception):
 
 class InvalidInterval(Exception):
     pass
+
+
+class InvalidPairCoins(Exception):
+    pass

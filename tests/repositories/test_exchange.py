@@ -1,4 +1,7 @@
+from pytest import raises
+
 from binance_analyst.adapters.binance import TickerPrices
+from binance_analyst.exceptions import InvalidPairCoins
 from binance_analyst.objects import Coin, CoinAmount
 
 
@@ -65,3 +68,12 @@ def test_exchange_repository_convert_with_given_prices(repositories):
     converted = repositories.exchange.convert(asset, Coin(name="USDT"), exchange_prices=exchange_data)
 
     assert converted.amount == 40660.3
+
+
+def test_exchange_repository_convert_raise_symbol_not_found(repositories):
+    with raises(InvalidPairCoins, match="USDT-BTC"):
+        repositories.exchange.convert(
+            CoinAmount(coin=Coin(name="USDT"), amount=10000),
+            Coin(name="BTC"),
+            exchange_prices=TickerPrices(prices={}),
+        )
