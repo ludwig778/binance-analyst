@@ -18,6 +18,7 @@ def test_exchange_repository_load(monkeypatch, repositories):
                     {"askPrice": 40660.31, "bidPrice": 40660.3, "symbol": "BTCUSDT"},
                     {"askPrice": 0.1397, "bidPrice": 0.1396, "symbol": "DOGEUSDT"},
                     {"askPrice": 0.071171, "bidPrice": 0.071168, "symbol": "ETHBTC"},
+                    {"askPrice": 2771.34, "bidPrice": 2771.33, "symbol": "ETHUSDT"},
                     {"askPrice": 15.66, "bidPrice": 15.65, "symbol": "LINKUSDT"},
                     {"askPrice": 116.8, "bidPrice": 116.7, "symbol": "LTCUSDT"},
                     {"askPrice": 93.9, "bidPrice": 93.89, "symbol": "SOLUSDT"},
@@ -29,7 +30,7 @@ def test_exchange_repository_load(monkeypatch, repositories):
 
     exchange_data = repositories.exchange.load()
 
-    assert len(exchange_data.prices) == 10
+    assert len(exchange_data.prices) == 11
 
     assert exchange_data.prices["BTCUSDT"].ask == 40660.31
     assert exchange_data.prices["BTCUSDT"].bid == 40660.3
@@ -77,3 +78,33 @@ def test_exchange_repository_convert_raise_symbol_not_found(repositories):
             Coin(name="BTC"),
             exchange_prices=TickerPrices(prices={}),
         )
+
+
+def test_exchange_repository_get_transitional_coins(monkeypatch, repositories):
+    exchange_data = TickerPrices(
+        prices={
+            "BNBBTC": {"askPrice": 0.009949, "bidPrice": 0.009948},
+            "BNBUSDT": {"askPrice": 404.5, "bidPrice": 404.4},
+            "BTCUSDT": {"askPrice": 40660.31, "bidPrice": 40660.3},
+            "DOGEUSDT": {"askPrice": 0.1397, "bidPrice": 0.1396},
+            "ETHBTC": {"askPrice": 0.071171, "bidPrice": 0.071168},
+            "ETHUSDT": {"askPrice": 2771.34, "bidPrice": 2771.33},
+            "LINKUSDT": {"askPrice": 15.66, "bidPrice": 15.65},
+        }
+    )
+    monkeypatch.setattr(
+        "binance_analyst.adapters.BinanceAdapter.get_prices",
+        lambda *_: exchange_data
+    )
+
+    assert repositories.exchange.get_transitional_coins(
+        Coin(name="BTC"), Coin(name="LINK"), exchange_prices=exchange_data
+    ) == set([Coin("USDT")])
+
+    assert repositories.exchange.get_transitional_coins(
+        Coin(name="BNB"), Coin(name="ETH")
+    ) == set([Coin(name="BTC"), Coin(name="USDT")])
+
+    assert repositories.exchange.get_transitional_coins(
+        Coin(name="ETH"), Coin(name="THETA")
+    ) == set()

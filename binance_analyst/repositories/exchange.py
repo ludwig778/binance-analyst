@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Set
 
 from cachetools import TTLCache, cached
 
@@ -28,3 +28,25 @@ class ExchangeRepository(AdaptersAwareRepository):
             return CoinAmount(coin=to, amount=asset.amount / price.ask)
         else:
             raise InvalidPairCoins(f"{asset.coin.name}-{to.name}")
+
+    def get_transitional_coins(
+        self, origin: Coin, dest: Coin, exchange_prices: Optional[TickerPrices] = None
+    ) -> Set[Coin]:
+
+        if exchange_prices is None:
+            exchange_prices = self.load()
+
+        coins = set()
+        candidates = set()
+
+        for symbol in exchange_prices.prices.keys():
+            if origin.name in symbol:
+                candidates.add(symbol.replace(origin.name, ""))
+
+        for symbol in exchange_prices.prices.keys():
+            if dest.name in symbol:
+                coin_name = symbol.replace(dest.name, "")
+                if coin_name in candidates:
+                    coins.add(Coin(name=coin_name))
+
+        return coins
