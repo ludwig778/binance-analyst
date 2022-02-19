@@ -92,19 +92,14 @@ def test_exchange_repository_get_transitional_coins(monkeypatch, repositories):
             "LINKUSDT": {"askPrice": 15.66, "bidPrice": 15.65},
         }
     )
-    monkeypatch.setattr(
-        "binance_analyst.adapters.BinanceAdapter.get_prices",
-        lambda *_: exchange_data
-    )
+    monkeypatch.setattr("binance_analyst.adapters.BinanceAdapter.get_prices", lambda *_: exchange_data)
 
     assert repositories.exchange.get_transitional_coins(
         Coin(name="BTC"), Coin(name="LINK"), exchange_prices=exchange_data
     ) == set([Coin("USDT")])
 
-    assert repositories.exchange.get_transitional_coins(
-        Coin(name="BNB"), Coin(name="ETH")
-    ) == set([Coin(name="BTC"), Coin(name="USDT")])
+    assert repositories.exchange.get_transitional_coins(Coin(name="BNB"), Coin(name="ETH")) == set(
+        [Coin(name="BTC"), Coin(name="USDT")]
+    )
 
-    assert repositories.exchange.get_transitional_coins(
-        Coin(name="ETH"), Coin(name="THETA")
-    ) == set()
+    assert repositories.exchange.get_transitional_coins(Coin(name="ETH"), Coin(name="THETA")) == set()
