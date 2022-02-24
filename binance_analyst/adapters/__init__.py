@@ -23,7 +23,7 @@ def get_adapters() -> Adapters:
     settings = get_settings()
 
     return Adapters(
-        binance=BinanceAdapter(settings.binance_settings),
-        metadata=FileAdapter(settings.cache_settings.metadata_path_dir),
-        dataframe=DataFrameFileAdapter(settings.cache_settings.dataframe_path_dir),
+        binance=BinanceAdapter(settings=settings.binance_settings),
+        metadata=DirectoryAdapter(dir_path=settings.cache_settings.metadata_dir),
+        dataframe=DataFrameDirectoryAdapter(dir_path=settings.cache_settings.dataframe_dir),
     )

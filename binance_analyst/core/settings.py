@@ -1,36 +1,42 @@
-from os import environ
 from pathlib import Path
 
-from pydantic import BaseModel
+from hartware_lib.pydantic.field_types import BooleanFromString
+from pydantic import BaseSettings, Field
+
+DEFAULT_METADATA_CACHE_DIR = Path("cache_dir", "metadata")
+DEFAULT_DATAFRAME_CACHE_DIR = Path("cache_dir", "dataframes")
 
 
-class BinanceSettings(BaseModel):
+class BinanceApiSettings(BaseSettings):
     api_url: str = "https://api.binance.com"
-    api_key: str = environ["BINANCE_ANALYST_API_KEY"]
-    secret_key: str = environ["BINANCE_ANALYST_SECRET_KEY"]
+    api_key: str
+    secret_key: str
+
+    class Config:
+        case_sensitive = False
+        env_prefix = "BINANCE_ANALYST_"
 
 
-class CacheSettings(BaseModel):
-    metadata_path_dir: Path
-    dataframe_path_dir: Path
+class CacheSettings(BaseSettings):
+    metadata_dir: Path = DEFAULT_METADATA_CACHE_DIR
+    dataframe_dir: Path = DEFAULT_DATAFRAME_CACHE_DIR
+
+    class Config:
+        case_sensitive = False
+        env_prefix = "BINANCE_ANALYST_"
 
 
-class Settings(BaseModel):
-    testing: bool
+class AppSettings(BaseSettings):
+    test: BooleanFromString = Field(default=False)
+    debug: BooleanFromString = Field(default=False)
 
-    cache_settings: CacheSettings
-    binance_settings: BinanceSettings = BinanceSettings()
+    cache_settings: CacheSettings = Field(default_factory=CacheSettings)
+    binance_settings: BinanceApiSettings = Field(default_factory=BinanceApiSettings)
+
+    class Config:
+        case_sensitive = False
+        env_prefix = "BINANCE_ANALYST_"
 
 
-def get_settings() -> Settings:
-    testing: bool = bool(environ.get("BINANCE_ANALYST_TEST"))
-
-    cache_folder: Path = Path("tests", "fixtures") if testing else Path("/", "app", "cache_dir")
-
-    return Settings(
-        testing=testing,
-        cache_settings={
-            "metadata_path_dir": cache_folder / "metadata",
-            "dataframe_path_dir": cache_folder / "dataframes",
-        },
-    )
+def get_settings() -> AppSettings:
+    return AppSettings()
