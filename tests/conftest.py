@@ -3,8 +3,8 @@ from datetime import datetime
 from pytest import fixture
 
 from binance_analyst.adapters import get_adapters
-from binance_analyst.core.settings import get_settings
 from binance_analyst.repositories import get_repositories
+from binance_analyst.settings import get_settings
 from tests.fixtures import *  # noqa
 
 
@@ -14,18 +14,20 @@ def settings():
 
 
 @fixture(scope="function")
-def adapters():
-    return get_adapters()
+def adapters(settings):
+    return get_adapters(settings=settings)
 
 
 @fixture(scope="function")
-def repositories():
-    return get_repositories()
+def repositories(adapters):
+    return get_repositories(adapters=adapters)
 
 
 @fixture(scope="session")
 def dataframes_1d():
-    pair_repo = get_repositories().pair
+    settings = get_settings()
+    adapters = get_adapters(settings=settings)
+    pair_repo = get_repositories(adapters=adapters).pair
 
     pairs = pair_repo.load()
 

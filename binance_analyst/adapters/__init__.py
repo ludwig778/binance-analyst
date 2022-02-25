@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 from binance_analyst.adapters.binance import BinanceAdapter
 from binance_analyst.adapters.dataframe import DataFrameDirectoryAdapter
-from binance_analyst.core.settings import get_settings
+from binance_analyst.settings import AppSettings
 
 AdapterInstance = Union[BinanceAdapter, DirectoryAdapter, DataFrameDirectoryAdapter]
 
@@ -19,9 +19,7 @@ class Adapters(BaseModel):
         arbitrary_types_allowed = True
 
 
-def get_adapters() -> Adapters:
-    settings = get_settings()
-
+def get_adapters(settings: AppSettings) -> Adapters:
     return Adapters(
         binance=BinanceAdapter(settings=settings.binance_settings),
         metadata=DirectoryAdapter(dir_path=settings.cache_settings.metadata_dir),

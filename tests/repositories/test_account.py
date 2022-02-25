@@ -1,8 +1,7 @@
 from binance_analyst.objects import Coin, CoinAmount
-from binance_analyst.repositories import get_repositories
 
 
-def test_account_repository_load(monkeypatch):
+def test_account_repository_load(monkeypatch, repositories):
     monkeypatch.setattr(
         "binance_analyst.adapters.BinanceAdapter.get_account_info",
         lambda _: {
@@ -16,7 +15,7 @@ def test_account_repository_load(monkeypatch):
         },
     )
 
-    account = get_repositories().account.load()
+    account = repositories.account.load()
 
     assert len(account.coins) == 4
     assert account.coins == {
