@@ -21,15 +21,15 @@ class PairRepository(AdaptersAwareRepository):
         filename = "symbols.json"
 
         data = None
-        if self.adapters.metadata.exists(filename):
-            data = self.adapters.metadata.load(filename)
+        if self.adapters.metadata.file_exists(filename):
+            data = self.adapters.metadata.read_json(filename)
 
         if not data:
             data = {
                 coin_data.get("symbol"): [coin_data.get("baseAsset"), coin_data.get("quoteAsset")]
                 for coin_data in self.adapters.binance.get_exchange_info()
             }
-            self.adapters.metadata.save(filename, data)
+            self.adapters.metadata.write_json(filename, data)
 
         return {
             symbol: Pair(base=Coin(name=coins[0]), quote=Coin(name=coins[1]))
@@ -108,8 +108,8 @@ class PairRepository(AdaptersAwareRepository):
             )
 
         df = DataFrame()
-        if self.adapters.dataframe.exists(filename) and not no_cache:
-            df = self.adapters.dataframe.load(filename)
+        if self.adapters.dataframe.file_exists(filename) and not no_cache:
+            df = self.adapters.dataframe.read_dataframe(filename)
 
             if df.empty and full:
                 df = self._get_klines(pair, interval, start_datetime, end_datetime)
@@ -148,7 +148,7 @@ class PairRepository(AdaptersAwareRepository):
             df["trades"] = df["trades"].astype(int)
 
         if saving:
-            self.adapters.dataframe.save(filename, df)
+            self.adapters.dataframe.write_dataframe(filename, df)
 
         return df
 

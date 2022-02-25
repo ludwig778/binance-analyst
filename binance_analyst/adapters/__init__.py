@@ -1,19 +1,19 @@
 from typing import Union
 
+from hartware_lib.adapters.directory import DirectoryAdapter
 from pydantic import BaseModel
 
 from binance_analyst.adapters.binance import BinanceAdapter
-from binance_analyst.adapters.dataframe import DataFrameFileAdapter
-from binance_analyst.adapters.file import FileAdapter
+from binance_analyst.adapters.dataframe import DataFrameDirectoryAdapter
 from binance_analyst.core.settings import get_settings
 
-AdapterInstance = Union[BinanceAdapter, DataFrameFileAdapter, FileAdapter]
+AdapterInstance = Union[BinanceAdapter, DirectoryAdapter, DataFrameDirectoryAdapter]
 
 
 class Adapters(BaseModel):
     binance: BinanceAdapter
-    metadata: FileAdapter
-    dataframe: DataFrameFileAdapter
+    metadata: DirectoryAdapter
+    dataframe: DataFrameDirectoryAdapter
 
     class Config:
         arbitrary_types_allowed = True

@@ -141,6 +141,19 @@ pycodestyle = ">=2.7.0,<2.8.0"
 pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
+name = "hartware-lib"
+version = "0.2.6"
+description = "Core helper lib for Hartware codes."
+category = "main"
+optional = false
+python-versions = ">=3.8,<4.0"
+
+[package.extras]
+all = ["slack-sdk (>=3.11.2,<4.0.0)", "pydantic (>=1.9.0,<2.0.0)"]
+slack = ["slack-sdk (>=3.11.2,<4.0.0)"]
+pydantic = ["pydantic (>=1.9.0,<2.0.0)"]
+
+[[package]]
 name = "idna"
 version = "3.3"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -655,7 +668,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "58cdbbf58576a5e1e370757bd5da5efd06715d38ade7b32129ac07657bfc58b6"
+content-hash = "4fb2d68502d128ea5560fdcd02858d25994e819ab0ba9ce8749fe2424b3d67ac"
 
 [metadata.files]
 appnope = [
@@ -748,6 +761,10 @@ decorator = [
 flake8 = [
     {file = "flake8-3.9.2-py2.py3-none-any.whl", hash = "sha256:bf8fd333346d844f616e8d47905ef3a3384edae6b4e9beb0c5101e25e3110907"},
     {file = "flake8-3.9.2.tar.gz", hash = "sha256:07528381786f2a6237b061f6e96610a4167b226cb926e2aa2b6b1d78057c576b"},
+]
+hartware-lib = [
+    {file = "hartware-lib-0.2.6.tar.gz", hash = "sha256:dd1c5de433a6e938ebf17835f0494051c23d9ff6989b99d34e4f2b24cece4885"},
+    {file = "hartware_lib-0.2.6-py3-none-any.whl", hash = "sha256:9d159ce7b5aea12ee6ae93478a053fd9c2cde58b8aa5493460d656da3a3e0358"},
 ]
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},

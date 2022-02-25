@@ -10,7 +10,7 @@ def test_pair_repository_load_with_cache(repositories):
 
 
 def test_pair_repository_load_without_cache(repositories, pairs, monkeypatch):
-    monkeypatch.setattr("binance_analyst.adapters.FileAdapter.exists", lambda *_: False)
+    monkeypatch.setattr("binance_analyst.adapters.DirectoryAdapter.file_exists", lambda *_: False)
     monkeypatch.setattr(
         "binance_analyst.adapters.BinanceAdapter.get_exchange_info",
         lambda _: [
@@ -73,7 +73,7 @@ def test_pair_repository_load_dataframes(repositories, pairs):
 
 def test_pair_repository_get_klines(repositories, pairs, adapters, dataframes_1d, monkeypatch):
     def mock_get_historical_klines(*_args, **_kwargs):
-        return adapters.metadata.load("BNBBTC_1d_first_week_of_2021.json")
+        return adapters.metadata.read_json("BNBBTC_1d_first_week_of_2021.json")
 
     monkeypatch.setattr(
         "binance_analyst.adapters.BinanceAdapter.get_historical_klines", mock_get_historical_klines
@@ -92,13 +92,15 @@ def test_pair_repository_get_klines(repositories, pairs, adapters, dataframes_1d
 def test_pair_repository_get_klines_full(repositories, pairs, adapters, dataframes_1d, monkeypatch):
     def mock_get_historical_klines(*_args, start_datetime=None, end_datetime=None, **_kwargs):
         if (start_datetime, end_datetime) == (datetime(2020, 12, 25), datetime(2021, 1, 1)):
-            return adapters.metadata.load("BNBBTC_1d_last_week_of_2020.json")
+            return adapters.metadata.read_json("BNBBTC_1d_last_week_of_2020.json")
         if (start_datetime, end_datetime) == (datetime(2021, 1, 7), datetime(2021, 1, 14)):
-            return adapters.metadata.load("BNBBTC_1d_second_week_of_2021.json")
+            return adapters.metadata.read_json("BNBBTC_1d_second_week_of_2021.json")
 
-    monkeypatch.setattr("binance_analyst.adapters.DataFrameFileAdapter.exists", lambda *_: True)
     monkeypatch.setattr(
-        "binance_analyst.adapters.DataFrameFileAdapter.load",
+        "binance_analyst.adapters.DataFrameDirectoryAdapter.file_exists", lambda *_: True
+    )
+    monkeypatch.setattr(
+        "binance_analyst.adapters.DataFrameDirectoryAdapter.read_dataframe",
         lambda *_: dataframes_1d["BNBBTC"]["2021-01-01":"2021-01-07"],
     )
     monkeypatch.setattr(
