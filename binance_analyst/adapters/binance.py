@@ -41,8 +41,8 @@ class BinanceMetadata(BaseModel):
 
 
 class TickerPrice(BaseModel):
-    ask: float = Field(alias="askPrice", default=0)
-    bid: float = Field(alias="bidPrice", default=0)
+    ask: float = Field(alias="askPrice")
+    bid: float = Field(alias="bidPrice")
 
 
 class TickerPrices(BaseModel):
