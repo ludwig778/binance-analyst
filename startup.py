@@ -17,3 +17,4 @@ if not a.metadata.dir_path.exists() or not a.dataframe.dir_path.exists():
     a.dataframe.create_dir()
 
 pairs = r.pair.load()
+account = r.account.load()
