@@ -30,7 +30,7 @@ format: isort black
 sure: tests lint mypy piprot
 
 debug:
-	while :; do inotifywait -e modify -r .;clear;make tests;sleep .1 ;done
+	while :; do inotifywait -e modify -r .;clear;make ${ARGS};sleep .1 ;done
 
 tests:
 	pytest ${TEST_ARGS}
