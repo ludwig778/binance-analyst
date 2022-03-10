@@ -4,11 +4,11 @@ from cachetools import TTLCache, cached
 
 from binance_analyst.adapters.binance import TickerPrices
 from binance_analyst.exceptions import InvalidPairCoins
-from binance_analyst.objects import Coin, CoinAmount, Pair
-from binance_analyst.repositories.base import AdaptersAwareRepository
+from binance_analyst.models import Coin, CoinAmount, Pair
+from binance_analyst.controllers.base import AdaptersAwareController
 
 
-class ExchangeRepository(AdaptersAwareRepository):
+class ExchangeController(AdaptersAwareController):
     @cached(cache=TTLCache(maxsize=1, ttl=45))
     def load(self):
         return self.adapters.binance.get_prices()

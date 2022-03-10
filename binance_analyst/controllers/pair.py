@@ -3,20 +3,18 @@ from __future__ import annotations
 import operator
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
-from typing import Dict
 
 from pandas import DataFrame, DatetimeIndex, concat
 
-from binance_analyst.objects import Coin, Pair
-from binance_analyst.repositories.base import AdaptersAwareRepository
+from binance_analyst.models import Coin, Pair
+from binance_analyst.controllers.base import AdaptersAwareController
+from binance_analyst.types import Pairs, PairsDataframes
 
-Pairs = Dict[str, Pair]
-PairsDataframes = Dict[str, DataFrame]
 
 datetime_format = "%Y-%m-%d_%H:%M:%S"
 
 
-class PairRepository(AdaptersAwareRepository):
+class PairController(AdaptersAwareController):
     def load(self) -> Pairs:
         filename = "symbols.json"
 

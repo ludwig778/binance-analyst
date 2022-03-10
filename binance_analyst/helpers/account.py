@@ -1,9 +1,9 @@
 from binance_analyst.exceptions import InvalidPairCoins
-from binance_analyst.objects import Account, Coin, CoinAmount
-from binance_analyst.repositories import Repositories
+from binance_analyst.models import Account, Coin, CoinAmount
+from binance_analyst.controllers import Controllers
 
 
-def convert_account_coins_to(repositories: Repositories, account: Account, to: Coin) -> CoinAmount:
+def convert_account_coins_to(controllers: Controllers, account: Account, to: Coin) -> CoinAmount:
     total = CoinAmount(coin=to, amount=0.0)
 
     for asset in account.coins.values():
@@ -12,14 +12,14 @@ def convert_account_coins_to(repositories: Repositories, account: Account, to: C
 
         else:
             try:
-                converted = repositories.exchange.convert(asset, to)
+                converted = controllers.exchange.convert(asset, to)
             except InvalidPairCoins:
-                transitions = repositories.exchange.get_transitional_coins(asset.coin, to)
+                transitions = controllers.exchange.get_transitional_coins(asset.coin, to)
 
                 transition_results = {}
                 for transition in transitions:
-                    converted = repositories.exchange.convert(
-                        repositories.exchange.convert(asset, transition), to
+                    converted = controllers.exchange.convert(
+                        controllers.exchange.convert(asset, transition), to
                     )
                     transition_results[transition] = converted
 

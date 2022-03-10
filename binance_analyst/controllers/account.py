@@ -1,8 +1,8 @@
-from binance_analyst.objects import Account, Coin, CoinAmount
-from binance_analyst.repositories.base import AdaptersAwareRepository
+from binance_analyst.models import Account, Coin, CoinAmount
+from binance_analyst.controllers.base import AdaptersAwareController
 
 
-class AccountRepository(AdaptersAwareRepository):
+class AccountController(AdaptersAwareController):
     def load(self) -> Account:
         account_info = self.adapters.binance.get_account_info()
 

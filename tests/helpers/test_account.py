@@ -1,9 +1,9 @@
 from binance_analyst.adapters.binance import TickerPrices
 from binance_analyst.helpers.account import convert_account_coins_to
-from binance_analyst.objects import Account, Coin, CoinAmount
+from binance_analyst.models import Account, Coin, CoinAmount
 
 
-def test_convert_account_coins_to(repositories, monkeypatch):
+def test_convert_account_coins_to(controllers, monkeypatch):
     exchange_data = TickerPrices(
         prices={
             "BNBBTC": {"askPrice": 0.009949, "bidPrice": 0.009948},
@@ -27,17 +27,17 @@ def test_convert_account_coins_to(repositories, monkeypatch):
     )
 
     assert convert_account_coins_to(
-        repositories=repositories, account=account, to=Coin("USDT")
+        controllers=controllers, account=account, to=Coin("USDT")
     ) == CoinAmount(coin=Coin(name="USDT"), amount=51203.51840000001)
 
     assert convert_account_coins_to(
-        repositories=repositories, account=account, to=Coin("BTC")
+        controllers=controllers, account=account, to=Coin("BTC")
     ) == CoinAmount(coin=Coin(name="BTC"), amount=1.2653197745949305)
 
     assert convert_account_coins_to(
-        repositories=repositories, account=account, to=Coin("LINK")
+        controllers=controllers, account=account, to=Coin("LINK")
     ) == CoinAmount(coin=Coin(name="LINK"), amount=3269.7010472541506)
 
     assert convert_account_coins_to(
-        repositories=repositories, account=account, to=Coin("BNB")
+        controllers=controllers, account=account, to=Coin("BNB")
     ) == CoinAmount(coin=Coin(name="BNB"), amount=127.18149770792725)

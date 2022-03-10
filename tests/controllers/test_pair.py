@@ -3,13 +3,13 @@ from datetime import datetime
 from tests.utils import equal_dataframes
 
 
-def test_pair_repository_load_with_cache(repositories):
-    retrieved_pairs = repositories.pair.load()
+def test_pair_repository_load_with_cache(controllers):
+    retrieved_pairs = controllers.pair.load()
 
     assert len(retrieved_pairs) == 73
 
 
-def test_pair_repository_load_without_cache(repositories, pairs, monkeypatch):
+def test_pair_repository_load_without_cache(controllers, pairs, monkeypatch):
     monkeypatch.setattr("binance_analyst.adapters.DirectoryAdapter.file_exists", lambda *_: False)
     monkeypatch.setattr(
         "binance_analyst.adapters.BinanceAdapter.get_exchange_info",
@@ -22,15 +22,15 @@ def test_pair_repository_load_without_cache(repositories, pairs, monkeypatch):
             for symbol, pair in pairs.items()
         ],
     )
-    retrieved_pairs = repositories.pair.load()
+    retrieved_pairs = controllers.pair.load()
 
     assert len(retrieved_pairs) == 73
 
     assert retrieved_pairs == pairs
 
 
-def test_pair_repository_filter(pairs, repositories):
-    pair_repo = repositories.pair
+def test_pair_repository_filter(pairs, controllers):
+    pair_repo = controllers.pair
 
     assert len(pair_repo.filter(pairs, coin_strs=["BTC", "ETH", "BNB", "USDT", "BUSD"])) == 73
     assert len(pair_repo.filter(pairs, coin_strs=["BTC", "ETH"])) == 36
@@ -39,8 +39,8 @@ def test_pair_repository_filter(pairs, repositories):
     assert len(pair_repo.filter(pairs, coin_strs=["BTC", "FAKECOIN"], exclusive=True)) == 0
 
 
-def test_pair_repository_load_dataframes(repositories, pairs):
-    dataframes = repositories.pair.load_dataframes(
+def test_pair_repository_load_dataframes(controllers, pairs):
+    dataframes = controllers.pair.load_dataframes(
         pairs,
         interval="1d",
         start_datetime=datetime(2017, 1, 1),
@@ -71,7 +71,7 @@ def test_pair_repository_load_dataframes(repositories, pairs):
     assert dataframes["XTZETH"].empty
 
 
-def test_pair_repository_get_klines(repositories, pairs, adapters, dataframes_1d, monkeypatch):
+def test_pair_repository_get_klines(controllers, pairs, adapters, dataframes_1d, monkeypatch):
     def mock_get_historical_klines(*_args, **_kwargs):
         return adapters.metadata.read_json("BNBBTC_1d_first_week_of_2021.json")
 
@@ -79,7 +79,7 @@ def test_pair_repository_get_klines(repositories, pairs, adapters, dataframes_1d
         "binance_analyst.adapters.BinanceAdapter.get_historical_klines", mock_get_historical_klines
     )
 
-    dataframe = repositories.pair.get_klines(
+    dataframe = controllers.pair.get_klines(
         pairs["BNBBTC"],
         interval="1d",
         start_datetime=datetime(2021, 1, 1),
@@ -89,7 +89,7 @@ def test_pair_repository_get_klines(repositories, pairs, adapters, dataframes_1d
     assert equal_dataframes(dataframe, dataframes_1d["BNBBTC"]["2021-01-01":"2021-01-07"])
 
 
-def test_pair_repository_get_klines_full(repositories, pairs, adapters, dataframes_1d, monkeypatch):
+def test_pair_repository_get_klines_full(controllers, pairs, adapters, dataframes_1d, monkeypatch):
     def mock_get_historical_klines(*_args, start_datetime=None, end_datetime=None, **_kwargs):
         if (start_datetime, end_datetime) == (datetime(2020, 12, 25), datetime(2021, 1, 1)):
             return adapters.metadata.read_json("BNBBTC_1d_last_week_of_2020.json")
@@ -107,7 +107,7 @@ def test_pair_repository_get_klines_full(repositories, pairs, adapters, datafram
         "binance_analyst.adapters.BinanceAdapter.get_historical_klines", mock_get_historical_klines
     )
 
-    dataframe = repositories.pair.get_klines(
+    dataframe = controllers.pair.get_klines(
         pairs["BNBBTC"],
         interval="1d",
         start_datetime=datetime(2020, 12, 25),

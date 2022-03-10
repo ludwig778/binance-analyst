@@ -2,10 +2,10 @@ from pytest import raises
 
 from binance_analyst.adapters.binance import TickerPrices
 from binance_analyst.exceptions import InvalidPairCoins
-from binance_analyst.objects import Coin, CoinAmount
+from binance_analyst.models import Coin, CoinAmount
 
 
-def test_exchange_repository_load(monkeypatch, repositories):
+def test_exchange_repository_load(monkeypatch, controllers):
     monkeypatch.setattr(
         "binance_analyst.adapters.BinanceAdapter.get_prices",
         lambda *_: TickerPrices(
@@ -28,7 +28,7 @@ def test_exchange_repository_load(monkeypatch, repositories):
         ),
     )
 
-    exchange_data = repositories.exchange.load()
+    exchange_data = controllers.exchange.load()
 
     assert len(exchange_data.prices) == 11
 
@@ -36,7 +36,7 @@ def test_exchange_repository_load(monkeypatch, repositories):
     assert exchange_data.prices["BTCUSDT"].bid == 40660.3
 
 
-def test_exchange_repository_convert(monkeypatch, repositories):
+def test_exchange_repository_convert(monkeypatch, controllers):
     monkeypatch.setattr(
         "binance_analyst.adapters.BinanceAdapter.get_prices",
         lambda *_: TickerPrices(
@@ -47,40 +47,40 @@ def test_exchange_repository_convert(monkeypatch, repositories):
     )
 
     asset = CoinAmount(coin=Coin(name="USDT"), amount=10000)
-    converted = repositories.exchange.convert(asset, Coin(name="BTC"))
+    converted = controllers.exchange.convert(asset, Coin(name="BTC"))
 
     assert converted.amount == 0.24594008260143616
 
     asset = CoinAmount(coin=Coin(name="BTC"), amount=1)
-    converted = repositories.exchange.convert(asset, Coin(name="USDT"))
+    converted = controllers.exchange.convert(asset, Coin(name="USDT"))
 
     assert converted.amount == 40660.3
 
 
-def test_exchange_repository_convert_with_given_prices(repositories):
+def test_exchange_repository_convert_with_given_prices(controllers):
     exchange_data = TickerPrices(prices={"BTCUSDT": {"askPrice": 40660.31, "bidPrice": 40660.3}})
 
     asset = CoinAmount(coin=Coin(name="USDT"), amount=10000)
-    converted = repositories.exchange.convert(asset, Coin(name="BTC"), exchange_prices=exchange_data)
+    converted = controllers.exchange.convert(asset, Coin(name="BTC"), exchange_prices=exchange_data)
 
     assert converted.amount == 0.24594008260143616
 
     asset = CoinAmount(coin=Coin(name="BTC"), amount=1)
-    converted = repositories.exchange.convert(asset, Coin(name="USDT"), exchange_prices=exchange_data)
+    converted = controllers.exchange.convert(asset, Coin(name="USDT"), exchange_prices=exchange_data)
 
     assert converted.amount == 40660.3
 
 
-def test_exchange_repository_convert_raise_symbol_not_found(repositories):
+def test_exchange_repository_convert_raise_symbol_not_found(controllers):
     with raises(InvalidPairCoins, match="USDT-BTC"):
-        repositories.exchange.convert(
+        controllers.exchange.convert(
             CoinAmount(coin=Coin(name="USDT"), amount=10000),
             Coin(name="BTC"),
             exchange_prices=TickerPrices(prices={}),
         )
 
 
-def test_exchange_repository_get_transitional_coins(monkeypatch, repositories):
+def test_exchange_repository_get_transitional_coins(monkeypatch, controllers):
     exchange_data = TickerPrices(
         prices={
             "BNBBTC": {"askPrice": 0.009949, "bidPrice": 0.009948},
@@ -94,12 +94,12 @@ def test_exchange_repository_get_transitional_coins(monkeypatch, repositories):
     )
     monkeypatch.setattr("binance_analyst.adapters.BinanceAdapter.get_prices", lambda *_: exchange_data)
 
-    assert repositories.exchange.get_transitional_coins(
+    assert controllers.exchange.get_transitional_coins(
         Coin(name="BTC"), Coin(name="LINK"), exchange_prices=exchange_data
     ) == set([Coin("USDT")])
 
-    assert repositories.exchange.get_transitional_coins(Coin(name="BNB"), Coin(name="ETH")) == set(
+    assert controllers.exchange.get_transitional_coins(Coin(name="BNB"), Coin(name="ETH")) == set(
         [Coin(name="BTC"), Coin(name="USDT")]
     )
 
-    assert repositories.exchange.get_transitional_coins(Coin(name="ETH"), Coin(name="THETA")) == set()
+    assert controllers.exchange.get_transitional_coins(Coin(name="ETH"), Coin(name="THETA")) == set()
