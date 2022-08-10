@@ -1,11 +1,7 @@
-from datetime import datetime
-
 from pytest import fixture
 
-from binance_analyst.adapters import get_adapters
-from binance_analyst.controllers import get_controllers
-from binance_analyst.settings import get_settings
-from tests.fixtures import *  # noqa
+from analyst.adapters import LocalFileAdapter, RedisAdapter, get_adapters
+from analyst.settings import get_settings
 
 
 @fixture(scope="function")
@@ -19,21 +15,10 @@ def adapters(settings):
 
 
 @fixture(scope="function")
-def controllers(adapters):
-    return get_controllers(adapters=adapters)
+def redis_adapter(settings):
+    return RedisAdapter(**settings.redis_cache_settings.dict())
 
 
-@fixture(scope="session")
-def dataframes_1d():
-    settings = get_settings()
-    adapters = get_adapters(settings=settings)
-    pair_repo = get_controllers(adapters=adapters).pair
-
-    pairs = pair_repo.load()
-
-    yield pair_repo.load_dataframes(
-        pairs,
-        interval="1d",
-        start_datetime=datetime(2017, 1, 1),
-        end_datetime=datetime(2022, 1, 1),
-    )
+@fixture(scope="function")
+def local_file_adapter(settings):
+    return LocalFileAdapter(dir_path=settings.file_cache_settings.dir)

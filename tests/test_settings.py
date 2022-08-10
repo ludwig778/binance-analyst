@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from binance_analyst.settings import get_settings
+from analyst.settings import get_settings
 
 
 def test_settings_default_test_values():

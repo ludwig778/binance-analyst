@@ -1,20 +1,24 @@
 from datetime import datetime, timedelta
+from os import environ
+from pprint import pprint as pp
 
 import numpy as np
 import pandas as pd
 
-from binance_analyst.adapters import get_adapters
-from binance_analyst.repositories import get_repositories
-from binance_analyst.settings import get_settings
+from analyst.adapters import get_adapters
+from analyst.adapters.local_file import LocalFileAdapter
+from analyst.controllers.binance import *
+from analyst.settings import get_settings
+
+environ["ANALYST_REDIS_HOST"] = ""
+environ["ANALYST_CACHE_DIR"] = "tests/fixture_data"
 
 s = get_settings()
 a = get_adapters(settings=s)
-r = get_repositories(adapters=a)
 
-if not a.metadata.dir_path.exists() or not a.dataframe.dir_path.exists():
-    print("Create default adapters directories")
-    a.metadata.create_dir()
-    a.dataframe.create_dir()
+if isinstance(a.cache, LocalFileAdapter) and not a.cache.dir_path.exists():
+    print("Create default local file cache directory")
+    a.cache.create_dir()
 
-pairs = r.pair.load()
-account = r.account.load()
+acc = load_account(a)
+pa = load_exchange_data(a)
