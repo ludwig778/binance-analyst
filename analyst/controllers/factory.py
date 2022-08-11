@@ -1,7 +1,7 @@
+from pydantic import BaseModel
+
 from analyst.adapters.factory import Adapters
 from analyst.controllers.binance import BinanceController
-
-from pydantic import BaseModel
 
 
 class Controllers(BaseModel):

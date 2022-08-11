@@ -1,10 +1,11 @@
-from pydantic import BaseModel
 from typing import Union
+
+from pydantic import BaseModel
+
 from analyst.adapters.binance import BinanceAdapter, BinanceWebSocketAdapter
 from analyst.adapters.local_file import LocalFileAdapter
 from analyst.adapters.redis import RedisAdapter
 from analyst.settings import AppSettings
-
 
 CacheAdapter = Union[LocalFileAdapter, RedisAdapter]
 
