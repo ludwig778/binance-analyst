@@ -48,11 +48,11 @@ def test_convert_coin(adapters, binance_controller, monkeypatch):
     mock_pair_prices_info(adapters, monkeypatch)
 
     assert binance_controller.convert_coin(CoinAmount(coin="BTC", amount=1), "USDT") == CoinAmount(
-        coin="USDT", amount=23954.37
+        coin="USDT", amount=23955.84
     )
 
     assert binance_controller.convert_coin(CoinAmount(coin="USDT", amount=1000), "BTC") == CoinAmount(
-        coin="BTC", amount=0.04174347466004114
+        coin="BTC", amount=0.041746036318216675
     )
 
     with raises(InvalidPairCoins):
@@ -97,17 +97,17 @@ def test_convert_account_coins(adapters, binance_controller, monkeypatch):
     }
 
     assert binance_controller.convert_account_coins_to(account=account, to="USDT") == CoinAmount(
-        coin="USDT", amount=32640.094559999998
+        coin="USDT", amount=32641.5846
     )
 
     assert binance_controller.convert_account_coins_to(account=account, to="BTC") == CoinAmount(
-        coin="BTC", amount=1.3625612533002056
+        coin="BTC", amount=1.3625761015910833
     )
 
     assert binance_controller.convert_account_coins_to(account=account, to="LINK") == CoinAmount(
-        coin="LINK", amount=3534.3661833159968
+        coin="LINK", amount=3535.4164735075165
     )
 
     assert binance_controller.convert_account_coins_to(account=account, to="BNB") == CoinAmount(
-        coin="BNB", amount=97.5736173869401
+        coin="BNB", amount=97.58928402411846
     )

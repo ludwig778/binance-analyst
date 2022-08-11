@@ -136,9 +136,9 @@ class BinanceController:
             exchange_prices = self.load_prices()
 
         if price := exchange_prices.get(f"{asset.coin}{to}"):
-            return CoinAmount(coin=to, amount=asset.amount * price.bid)
+            return CoinAmount(coin=to, amount=asset.amount * price.ask)
         elif price := exchange_prices.get(f"{to}{asset.coin}"):
-            return CoinAmount(coin=to, amount=asset.amount / price.ask)
+            return CoinAmount(coin=to, amount=asset.amount / price.bid)
         else:
             raise InvalidPairCoins(f"{asset.coin}-{to}")
 
