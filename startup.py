@@ -20,5 +20,6 @@ if isinstance(a.cache, LocalFileAdapter) and not a.cache.dir_path.exists():
     print("Create default local file cache directory")
     a.cache.create_dir()
 
-acc = load_account(a)
-pa = load_exchange_data(a)
+account = load_account(a)
+pairs = load_exchange_data(a)
+prices = load_prices(a)

@@ -12,6 +12,7 @@ from pandas import DataFrame, DatetimeIndex
 from pydantic import BaseModel, Field, root_validator
 from websocket import create_connection
 
+from analyst.adapters.types import ParamsDict
 from analyst.crypto.exceptions import BinanceError, InvalidInterval, WrongDatetimeRange
 
 
@@ -120,6 +121,51 @@ class BinanceAdapter:
         self.add_weight(10)
 
         response = self.session.get(f"{self.settings.api_url}/api/v3/account", params=params)
+
+        return response.json()
+
+    def create_order(
+        self,
+        symbol: str,
+        side: str,
+        type: str,
+        price: float = 0.0,
+        quantity: float = 0.0,
+        quote_quantity: float = 0.0,
+        stop_price: float = 0.0,
+        time_in_force: str = "",
+        real: bool = False,
+    ):
+        params: ParamsDict = {
+            "symbol": symbol,
+            "side": side,
+            "type": type,
+            "timestamp": datetime.now().strftime("%s000"),
+        }
+
+        if quantity:
+            params["quantity"] = quantity
+        elif quote_quantity:
+            params["quoteOrderQty"] = quote_quantity
+        else:
+            raise Exception("Quantity must be set")
+
+        if time_in_force:
+            params["timeInForce"] = time_in_force
+
+        if price:
+            params["price"] = price
+        if stop_price:
+            params["stop¨rice"] = stop_price
+
+        params["signature"] = self._get_signature(params)
+
+        self.add_weight(1)
+
+        if not real:
+            response = self.session.post(f"{self.settings.api_url}/api/v3/order/test", params=params)
+        else:
+            response = self.session.post(f"{self.settings.api_url}/api/v3/order", params=params)
 
         return response.json()
 

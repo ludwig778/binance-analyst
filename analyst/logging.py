@@ -6,10 +6,12 @@ logging.config.dictConfig(
     {
         "version": 1,
         "disable_existing_loggers": True,
-        "formatters": {"standard": {"format": "%(asctime)s %(levelname)s %(funcName)s %(message)s"}},
+        "formatters": {
+            "standard": {"format": "%(asctime)s %(module)s %(levelname)s %(funcName)s %(message)s"}
+        },
         "handlers": {
             "default": {
-                "level": logging.DEBUG,
+                "level": logging.INFO,
                 "formatter": "standard",
                 "class": "logging.StreamHandler",
                 "stream": "ext://sys.stdout",

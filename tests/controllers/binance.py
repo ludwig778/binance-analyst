@@ -1,22 +1,14 @@
 from pytest import raises
 
-from analyst.controllers.binance import (
-    convert_account_coins_to,
-    convert_coin,
-    filter_pairs,
-    get_transitional_coins,
-    load_account,
-    load_exchange_data,
-)
 from analyst.crypto.exceptions import InvalidPairCoins
 from analyst.crypto.models import CoinAmount
 from tests.controllers.mocks import mock_account_info, mock_exchange_data_info, mock_pair_prices_info
 
 
-def test_account_load(adapters, monkeypatch):
+def test_account_load(adapters, controllers, monkeypatch):
     mock_account_info(adapters, monkeypatch)
 
-    account = load_account(adapters)
+    account = controllers.binance.load_account()
 
     assert len(account) == 4
     assert account == {
@@ -27,46 +19,51 @@ def test_account_load(adapters, monkeypatch):
     }
 
 
-def test_exchange_data_load(adapters, monkeypatch):
+def test_exchange_data_load(adapters, controllers, monkeypatch):
     mock_exchange_data_info(adapters, monkeypatch)
 
-    pairs = load_exchange_data(adapters)
+    pairs = controllers.binance.load_exchange_data()
 
     assert len(pairs) == 73
 
 
-def test_pair_repository_filter(adapters, monkeypatch):
+def test_pair_repository_filter(adapters, binance_controller, monkeypatch):
     mock_exchange_data_info(adapters, monkeypatch)
 
-    pairs = load_exchange_data(adapters)
+    pairs = binance_controller.load_exchange_data()
 
-    assert len(filter_pairs(pairs, coin_strs=["BTC", "ETH", "BNB", "USDT", "BUSD"])) == 73
-    assert len(filter_pairs(pairs, coin_strs=["BTC", "ETH"])) == 36
-    assert len(filter_pairs(pairs, coin_strs=["BTC"])) == 20
-    assert len(filter_pairs(pairs, coin_strs=["BTC", "ETH"], exclusive=True)) == 1
-    assert len(filter_pairs(pairs, coin_strs=["BTC", "FAKECOIN"], exclusive=True)) == 0
+    assert (
+        len(binance_controller.filter_pairs(pairs, coin_strs=["BTC", "ETH", "BNB", "USDT", "BUSD"]))
+        == 73
+    )
+    assert len(binance_controller.filter_pairs(pairs, coin_strs=["BTC", "ETH"])) == 36
+    assert len(binance_controller.filter_pairs(pairs, coin_strs=["BTC"])) == 20
+    assert len(binance_controller.filter_pairs(pairs, coin_strs=["BTC", "ETH"], exclusive=True)) == 1
+    assert (
+        len(binance_controller.filter_pairs(pairs, coin_strs=["BTC", "FAKECOIN"], exclusive=True)) == 0
+    )
 
 
-def test_convert_coin(adapters, monkeypatch):
+def test_convert_coin(adapters, binance_controller, monkeypatch):
     mock_pair_prices_info(adapters, monkeypatch)
 
-    assert convert_coin(adapters, CoinAmount(coin="BTC", amount=1), "USDT") == CoinAmount(
+    assert binance_controller.convert_coin(CoinAmount(coin="BTC", amount=1), "USDT") == CoinAmount(
         coin="USDT", amount=23954.37
     )
 
-    assert convert_coin(adapters, CoinAmount(coin="USDT", amount=1000), "BTC") == CoinAmount(
+    assert binance_controller.convert_coin(CoinAmount(coin="USDT", amount=1000), "BTC") == CoinAmount(
         coin="BTC", amount=0.04174347466004114
     )
 
     with raises(InvalidPairCoins):
-        convert_coin(adapters, CoinAmount(coin="LINT", amount=100), "THETA")
+        binance_controller.convert_coin(CoinAmount(coin="LINT", amount=100), "THETA")
 
 
-def test_get_transitional_coins(adapters, monkeypatch):
+def test_get_transitional_coins(adapters, binance_controller, monkeypatch):
     mock_pair_prices_info(adapters, monkeypatch)
 
-    assert get_transitional_coins(adapters, "BTC", "LINK") == set(["USDT", "BNB", "ETH"])
-    assert get_transitional_coins(adapters, "BNB", "ETH") == set(
+    assert binance_controller.get_transitional_coins("BTC", "LINK") == set(["USDT", "BNB", "ETH"])
+    assert binance_controller.get_transitional_coins("BNB", "ETH") == set(
         [
             "BTC",
             "USDT",
@@ -86,10 +83,10 @@ def test_get_transitional_coins(adapters, monkeypatch):
             "XTZ",
         ]
     )
-    assert get_transitional_coins(adapters, "ETH", "THETA") == set(["BNB", "USDT", "BTC"])
+    assert binance_controller.get_transitional_coins("ETH", "THETA") == set(["BNB", "USDT", "BTC"])
 
 
-def test_convert_account_coins(adapters, monkeypatch):
+def test_convert_account_coins(adapters, binance_controller, monkeypatch):
     mock_pair_prices_info(adapters, monkeypatch)
 
     account = {
@@ -99,18 +96,18 @@ def test_convert_account_coins(adapters, monkeypatch):
         "DOGE": CoinAmount(coin="DOGE", amount=4),
     }
 
-    assert convert_account_coins_to(adapters=adapters, account=account, to="USDT") == CoinAmount(
+    assert binance_controller.convert_account_coins_to(account=account, to="USDT") == CoinAmount(
         coin="USDT", amount=32640.094559999998
     )
 
-    assert convert_account_coins_to(adapters=adapters, account=account, to="BTC") == CoinAmount(
+    assert binance_controller.convert_account_coins_to(account=account, to="BTC") == CoinAmount(
         coin="BTC", amount=1.3625612533002056
     )
 
-    assert convert_account_coins_to(adapters=adapters, account=account, to="LINK") == CoinAmount(
+    assert binance_controller.convert_account_coins_to(account=account, to="LINK") == CoinAmount(
         coin="LINK", amount=3534.3661833159968
     )
 
-    assert convert_account_coins_to(adapters=adapters, account=account, to="BNB") == CoinAmount(
+    assert binance_controller.convert_account_coins_to(account=account, to="BNB") == CoinAmount(
         coin="BNB", amount=97.5736173869401
     )

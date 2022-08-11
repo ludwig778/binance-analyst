@@ -1,6 +1,7 @@
 from pytest import fixture
 
-from analyst.adapters import LocalFileAdapter, RedisAdapter, get_adapters
+from analyst.adapters.factory import LocalFileAdapter, RedisAdapter, get_adapters
+from analyst.controllers.factory import get_controllers
 from analyst.settings import get_settings
 
 
@@ -22,3 +23,13 @@ def redis_adapter(settings):
 @fixture(scope="function")
 def local_file_adapter(settings):
     return LocalFileAdapter(dir_path=settings.file_cache_settings.dir)
+
+
+@fixture(scope="function")
+def controllers(adapters):
+    return get_controllers(adapters=adapters)
+
+
+@fixture(scope="function")
+def binance_controller(controllers):
+    return controllers.binance

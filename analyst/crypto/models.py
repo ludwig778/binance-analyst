@@ -35,7 +35,7 @@ Pairs = Dict[str, Pair]
 PairsPrices = Dict[str, PairPrices]
 
 
-class BinanceInfos(BaseModel):
+class BinanceSummary(BaseModel):
     account: Account
     pairs: Pairs
     prices: PairsPrices
