@@ -1,6 +1,6 @@
 {
   "timezone": "UTC",
-  "serverTime": 1660144805461,
+  "serverTime": 1662661031419,
   "rateLimits": [
     {
       "rateLimitType": "REQUEST_WEIGHT",
@@ -85,7 +85,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "1182.22927718",
+          "maxQty": "1090.00783247",
           "stepSize": "0.00000000"
         },
         {
@@ -107,7 +107,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -166,7 +167,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "9465.00962803",
+          "maxQty": "7399.65453088",
           "stepSize": "0.00000000"
         },
         {
@@ -188,7 +189,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -247,7 +249,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "7471.08297362",
+          "maxQty": "7281.10901178",
           "stepSize": "0.00000000"
         },
         {
@@ -269,7 +271,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -328,7 +331,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "3635.06158599",
+          "maxQty": "3803.27209153",
           "stepSize": "0.00000000"
         },
         {
@@ -350,7 +353,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -409,7 +413,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "226.33420727",
+          "maxQty": "347.97279965",
           "stepSize": "0.00000000"
         },
         {
@@ -431,7 +435,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -490,7 +495,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "6788.87375925",
+          "maxQty": "7493.09204750",
           "stepSize": "0.00000000"
         },
         {
@@ -512,7 +517,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -571,7 +577,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "35588.51441054",
+          "maxQty": "35073.63455239",
           "stepSize": "0.00000000"
         },
         {
@@ -593,7 +599,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -652,7 +659,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "11933.46513176",
+          "maxQty": "19760.80877083",
           "stepSize": "0.00000000"
         },
         {
@@ -674,7 +681,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -733,7 +741,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "2289458.99444444",
+          "maxQty": "1574342.67222222",
           "stepSize": "0.00000000"
         },
         {
@@ -755,7 +763,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -814,7 +823,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "383024.42986111",
+          "maxQty": "355943.41082581",
           "stepSize": "0.00000000"
         },
         {
@@ -836,7 +845,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -895,7 +905,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "34143.86713592",
+          "maxQty": "18147.96732338",
           "stepSize": "0.00000000"
         },
         {
@@ -917,7 +927,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -976,7 +987,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "203443.44868238",
+          "maxQty": "135225.13601665",
           "stepSize": "0.00000000"
         },
         {
@@ -998,7 +1009,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -1057,7 +1069,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "46479.75538020",
+          "maxQty": "48548.81666666",
           "stepSize": "0.00000000"
         },
         {
@@ -1078,7 +1090,8 @@
       ],
       "permissions": [
         "SPOT",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -1158,7 +1171,8 @@
       ],
       "permissions": [
         "SPOT",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -1217,7 +1231,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "1855686.98703190",
+          "maxQty": "1484127.07675225",
           "stepSize": "0.00000000"
         },
         {
@@ -1297,7 +1311,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "312665.00006939",
+          "maxQty": "262389.17314365",
           "stepSize": "0.00000000"
         },
         {
@@ -1377,7 +1391,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "1027.53136016",
+          "maxQty": "1809.48636313",
           "stepSize": "0.00000000"
         },
         {
@@ -1399,7 +1413,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -1458,7 +1473,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "25570.88529750",
+          "maxQty": "22883.91594382",
           "stepSize": "0.00000000"
         },
         {
@@ -1480,7 +1495,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -1539,7 +1555,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "965.99446084",
+          "maxQty": "929.86134420",
           "stepSize": "0.00000000"
         },
         {
@@ -1560,7 +1576,8 @@
       ],
       "permissions": [
         "SPOT",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -1619,7 +1636,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "8494274.83444444",
+          "maxQty": "8530502.14611110",
           "stepSize": "0.00000000"
         },
         {
@@ -1699,7 +1716,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "195423.65152777",
+          "maxQty": "145329.76659722",
           "stepSize": "0.00000000"
         },
         {
@@ -1800,7 +1817,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -1859,7 +1877,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "133593.14875000",
+          "maxQty": "113678.09854368",
           "stepSize": "0.00000000"
         },
         {
@@ -1940,7 +1958,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "16918.40187500",
+          "maxQty": "37328.01951388",
           "stepSize": "0.00000000"
         },
         {
@@ -2020,7 +2038,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "31415.42581540",
+          "maxQty": "33025.90645833",
           "stepSize": "0.00000000"
         },
         {
@@ -2100,7 +2118,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "295168.16377515",
+          "maxQty": "250466.24982650",
           "stepSize": "0.00000000"
         },
         {
@@ -2121,7 +2139,8 @@
       ],
       "permissions": [
         "SPOT",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -2180,7 +2199,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "246516.47257638",
+          "maxQty": "191368.74401804",
           "stepSize": "0.00000000"
         },
         {
@@ -2202,7 +2221,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -2261,7 +2281,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "1126878.15811373",
+          "maxQty": "607222.73282442",
           "stepSize": "0.00000000"
         },
         {
@@ -2283,7 +2303,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -2342,7 +2363,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "681512.90256944",
+          "maxQty": "386547.39466389",
           "stepSize": "0.00000000"
         },
         {
@@ -2502,7 +2523,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "18594664.82177531",
+          "maxQty": "22102399.42827442",
           "stepSize": "0.00000000"
         },
         {
@@ -2582,7 +2603,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "27589443.84743411",
+          "maxQty": "32445604.21096460",
           "stepSize": "0.00000000"
         },
         {
@@ -2662,7 +2683,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "22567.71231158",
+          "maxQty": "15691.29333448",
           "stepSize": "0.00000000"
         },
         {
@@ -2684,7 +2705,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -2743,7 +2765,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "115.66930599",
+          "maxQty": "133.65434036",
           "stepSize": "0.00000000"
         },
         {
@@ -2765,7 +2787,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -2824,7 +2847,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "83968960.54915219",
+          "maxQty": "70507604.02347435",
           "stepSize": "0.00000000"
         },
         {
@@ -2846,7 +2869,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -2905,7 +2929,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "14241.05940319",
+          "maxQty": "8852.31496881",
           "stepSize": "0.00000000"
         },
         {
@@ -2925,7 +2949,8 @@
         }
       ],
       "permissions": [
-        "SPOT"
+        "SPOT",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -2984,7 +3009,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "57938.13425797",
+          "maxQty": "105241.03606102",
           "stepSize": "0.00000000"
         },
         {
@@ -3005,7 +3030,8 @@
       ],
       "permissions": [
         "SPOT",
-        "MARGIN"
+        "MARGIN",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -3064,7 +3090,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "269563.74996530",
+          "maxQty": "404502.43821081",
           "stepSize": "0.00000000"
         },
         {
@@ -3085,7 +3111,8 @@
       ],
       "permissions": [
         "SPOT",
-        "MARGIN"
+        "MARGIN",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -3144,7 +3171,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "2472.15920416",
+          "maxQty": "3222.34999576",
           "stepSize": "0.00000000"
         },
         {
@@ -3166,7 +3193,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -3225,7 +3253,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "257.57281167",
+          "maxQty": "276.49648888",
           "stepSize": "0.00000000"
         },
         {
@@ -3246,7 +3274,8 @@
       ],
       "permissions": [
         "SPOT",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -3305,7 +3334,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "1614.50391026",
+          "maxQty": "1471.92534746",
           "stepSize": "0.00000000"
         },
         {
@@ -3327,7 +3356,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -3386,7 +3416,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "9023.48652361",
+          "maxQty": "4689.96871944",
           "stepSize": "0.00000000"
         },
         {
@@ -3408,7 +3438,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -3467,7 +3498,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "3952.87645753",
+          "maxQty": "5343.76879082",
           "stepSize": "0.00000000"
         },
         {
@@ -3487,7 +3518,8 @@
         }
       ],
       "permissions": [
-        "SPOT"
+        "SPOT",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -3546,7 +3578,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "13685.99858781",
+          "maxQty": "16185.73636805",
           "stepSize": "0.00000000"
         },
         {
@@ -3567,7 +3599,8 @@
       ],
       "permissions": [
         "SPOT",
-        "MARGIN"
+        "MARGIN",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -3626,7 +3659,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "165983.63422916",
+          "maxQty": "154945.50208593",
           "stepSize": "0.00000000"
         },
         {
@@ -3647,7 +3680,8 @@
       ],
       "permissions": [
         "SPOT",
-        "MARGIN"
+        "MARGIN",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -3727,7 +3761,8 @@
       ],
       "permissions": [
         "SPOT",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -3807,7 +3842,8 @@
       ],
       "permissions": [
         "SPOT",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -3887,7 +3923,8 @@
       ],
       "permissions": [
         "SPOT",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -3946,7 +3983,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "175.62367047",
+          "maxQty": "121.17966243",
           "stepSize": "0.00000000"
         },
         {
@@ -3967,7 +4004,8 @@
       ],
       "permissions": [
         "SPOT",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -4026,7 +4064,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "8017.37506944",
+          "maxQty": "7176.58739070",
           "stepSize": "0.00000000"
         },
         {
@@ -4046,7 +4084,8 @@
         }
       ],
       "permissions": [
-        "SPOT"
+        "SPOT",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -4105,7 +4144,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "55588.94767361",
+          "maxQty": "52171.59593208",
           "stepSize": "0.00000000"
         },
         {
@@ -4126,7 +4165,8 @@
       ],
       "permissions": [
         "SPOT",
-        "MARGIN"
+        "MARGIN",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -4185,7 +4225,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "296870.23480173",
+          "maxQty": "327572.30226546",
           "stepSize": "0.00000000"
         },
         {
@@ -4206,7 +4246,8 @@
       ],
       "permissions": [
         "SPOT",
-        "MARGIN"
+        "MARGIN",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -4424,7 +4465,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "229962.18413314",
+          "maxQty": "326252.62264216",
           "stepSize": "0.00000000"
         },
         {
@@ -4504,7 +4545,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "6701.39089583",
+          "maxQty": "5812.35750867",
           "stepSize": "0.00000000"
         },
         {
@@ -4525,7 +4566,8 @@
       ],
       "permissions": [
         "SPOT",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -4584,7 +4626,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "21346.45885496",
+          "maxQty": "24699.84501386",
           "stepSize": "0.00000000"
         },
         {
@@ -4606,7 +4648,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -4665,7 +4708,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "146469.64597780",
+          "maxQty": "104485.80072916",
           "stepSize": "0.00000000"
         },
         {
@@ -4687,7 +4730,8 @@
       "permissions": [
         "SPOT",
         "MARGIN",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -4746,7 +4790,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "2713.12122746",
+          "maxQty": "2605.47981263",
           "stepSize": "0.00000000"
         },
         {
@@ -4766,7 +4810,8 @@
         }
       ],
       "permissions": [
-        "SPOT"
+        "SPOT",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -4825,7 +4870,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "14755.35636111",
+          "maxQty": "11760.40296038",
           "stepSize": "0.00000000"
         },
         {
@@ -4846,7 +4891,8 @@
       ],
       "permissions": [
         "SPOT",
-        "MARGIN"
+        "MARGIN",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -4905,7 +4951,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "124546.05026334",
+          "maxQty": "124030.92639833",
           "stepSize": "0.00000000"
         },
         {
@@ -4926,7 +4972,8 @@
       ],
       "permissions": [
         "SPOT",
-        "MARGIN"
+        "MARGIN",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -4985,7 +5032,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "23747.98040277",
+          "maxQty": "27057.44243750",
           "stepSize": "0.00000000"
         },
         {
@@ -5005,7 +5052,8 @@
         }
       ],
       "permissions": [
-        "SPOT"
+        "SPOT",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -5064,7 +5112,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "39467.54925694",
+          "maxQty": "22262.12004861",
           "stepSize": "0.00000000"
         },
         {
@@ -5085,7 +5133,8 @@
       ],
       "permissions": [
         "SPOT",
-        "MARGIN"
+        "MARGIN",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -5144,7 +5193,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "71814.18037500",
+          "maxQty": "66736.73608725",
           "stepSize": "0.00000000"
         },
         {
@@ -5165,7 +5214,8 @@
       ],
       "permissions": [
         "SPOT",
-        "MARGIN"
+        "MARGIN",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -5245,7 +5295,8 @@
       ],
       "permissions": [
         "SPOT",
-        "MARGIN"
+        "MARGIN",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -5325,7 +5376,8 @@
       ],
       "permissions": [
         "SPOT",
-        "MARGIN"
+        "MARGIN",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -5384,7 +5436,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "3798.57940458",
+          "maxQty": "2580.19361927",
           "stepSize": "0.00000000"
         },
         {
@@ -5404,7 +5456,8 @@
         }
       ],
       "permissions": [
-        "SPOT"
+        "SPOT",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -5463,7 +5516,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "8389.46423611",
+          "maxQty": "6669.28940277",
           "stepSize": "0.00000000"
         },
         {
@@ -5483,7 +5536,8 @@
         }
       ],
       "permissions": [
-        "SPOT"
+        "SPOT",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -5542,7 +5596,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "2940.32181124",
+          "maxQty": "2474.48677531",
           "stepSize": "0.00000000"
         },
         {
@@ -5562,7 +5616,89 @@
         }
       ],
       "permissions": [
-        "SPOT"
+        "SPOT",
+        "TRD_GRP_005"
+      ]
+    },
+    {
+      "symbol": "AMPBTC",
+      "status": "TRADING",
+      "baseAsset": "AMP",
+      "baseAssetPrecision": 8,
+      "quoteAsset": "BTC",
+      "quotePrecision": 8,
+      "quoteAssetPrecision": 8,
+      "baseCommissionPrecision": 8,
+      "quoteCommissionPrecision": 8,
+      "orderTypes": [
+        "LIMIT",
+        "LIMIT_MAKER",
+        "MARKET",
+        "STOP_LOSS_LIMIT",
+        "TAKE_PROFIT_LIMIT"
+      ],
+      "icebergAllowed": true,
+      "ocoAllowed": true,
+      "quoteOrderQtyMarketAllowed": true,
+      "allowTrailingStop": true,
+      "cancelReplaceAllowed": true,
+      "isSpotTradingAllowed": true,
+      "isMarginTradingAllowed": false,
+      "filters": [
+        {
+          "filterType": "PRICE_FILTER",
+          "minPrice": "0.00000001",
+          "maxPrice": "1000.00000000",
+          "tickSize": "0.00000001"
+        },
+        {
+          "filterType": "PERCENT_PRICE",
+          "multiplierUp": "5",
+          "multiplierDown": "0.2",
+          "avgPriceMins": 5
+        },
+        {
+          "filterType": "LOT_SIZE",
+          "minQty": "1.00000000",
+          "maxQty": "92141578.00000000",
+          "stepSize": "1.00000000"
+        },
+        {
+          "filterType": "MIN_NOTIONAL",
+          "minNotional": "0.00010000",
+          "applyToMarket": true,
+          "avgPriceMins": 5
+        },
+        {
+          "filterType": "ICEBERG_PARTS",
+          "limit": 10
+        },
+        {
+          "filterType": "MARKET_LOT_SIZE",
+          "minQty": "0.00000000",
+          "maxQty": "30991215.87569444",
+          "stepSize": "0.00000000"
+        },
+        {
+          "filterType": "TRAILING_DELTA",
+          "minTrailingAboveDelta": 10,
+          "maxTrailingAboveDelta": 2000,
+          "minTrailingBelowDelta": 10,
+          "maxTrailingBelowDelta": 2000
+        },
+        {
+          "filterType": "MAX_NUM_ORDERS",
+          "maxNumOrders": 200
+        },
+        {
+          "filterType": "MAX_NUM_ALGO_ORDERS",
+          "maxNumAlgoOrders": 5
+        }
+      ],
+      "permissions": [
+        "SPOT",
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -5621,7 +5757,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "2846.51138584",
+          "maxQty": "2724.56243550",
           "stepSize": "0.00000000"
         },
         {
@@ -5642,7 +5778,8 @@
       ],
       "permissions": [
         "SPOT",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -5780,7 +5917,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "3262.36347291",
+          "maxQty": "3481.88276474",
           "stepSize": "0.00000000"
         },
         {
@@ -5801,7 +5938,8 @@
       ],
       "permissions": [
         "SPOT",
-        "TRD_GRP_004"
+        "TRD_GRP_004",
+        "TRD_GRP_005"
       ]
     },
     {
@@ -5860,7 +5998,7 @@
         {
           "filterType": "MARKET_LOT_SIZE",
           "minQty": "0.00000000",
-          "maxQty": "12013.07202888",
+          "maxQty": "7893.26297222",
           "stepSize": "0.00000000"
         },
         {
@@ -5880,7 +6018,8 @@
         }
       ],
       "permissions": [
-        "SPOT"
+        "SPOT",
+        "TRD_GRP_005"
       ]
     }
   ]

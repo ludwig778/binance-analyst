@@ -13,21 +13,21 @@ def redis_adapter(monkeypatch):
 
     settings = get_settings()
 
-    return RedisAdapter(**settings.redis_cache_settings.dict())
+    return RedisAdapter(**settings.redis_cache.dict())
 
 
 @fixture(scope="function", autouse=True)
 def clean(redis_adapter):
-    if keys := redis_adapter.keys("*"):
+    if keys := redis_adapter.list():
         redis_adapter.delete(*keys)
 
-    yield
+    yield redis_adapter
 
-    if keys := redis_adapter.keys("*"):
+    if keys := redis_adapter.list():
         redis_adapter.delete(*keys)
 
 
-def test_redis_adapter_exists_and_delete(redis_adapter):
+def test_exists_and_delete(redis_adapter):
     assert not redis_adapter.exists("some_key")
 
     redis_adapter.save("some_key", {"some": "data"})
@@ -39,7 +39,7 @@ def test_redis_adapter_exists_and_delete(redis_adapter):
     assert not redis_adapter.exists("some_key")
 
 
-def test_redis_adapter_save_and_read(redis_adapter):
+def test_save_and_read(redis_adapter):
     test_data = {"test": "data"}
 
     redis_adapter.save("some_key", test_data)
@@ -49,7 +49,7 @@ def test_redis_adapter_save_and_read(redis_adapter):
     assert test_data == stored_data
 
 
-def test_redis_adapter_save_and_read_dataframe(redis_adapter):
+def test_save_and_read_dataframe(redis_adapter):
     test_df = DataFrame({"a": [1, 3, 5], "b": [2, 4, 6]})
     test_df["timestamp"] = date_range("2022-01-01", "2022-01-03", freq="D")
     test_df.set_index("timestamp", inplace=True)

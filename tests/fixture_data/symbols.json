@@ -39,6 +39,10 @@
     "ADA",
     "USDT"
   ],
+  "AMPBTC": [
+    "AMP",
+    "BTC"
+  ],
   "AVAXBNB": [
     "AVAX",
     "BNB"

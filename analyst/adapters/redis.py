@@ -12,8 +12,14 @@ class RedisAdapter:
     def connected(self) -> bool:
         return self.session.ping()
 
-    def exist(self, name: str) -> bool:
+    def exists(self, name: str) -> bool:
         return self.session.exists(name) != 0
+
+    def list(self, pattern: str = "*"):
+        return self.session.keys(pattern)
+
+    def delete(self, name: str) -> None:
+        self.session.delete(name)
 
     def read(self, name: str) -> dict:
         return loads(self.session.get(name))

@@ -12,3 +12,11 @@ class InvalidInterval(Exception):
 
 class InvalidPairCoins(Exception):
     pass
+
+
+class OrderWouldMatch(Exception):
+    pass
+
+
+class PriceMustBeSetOnMarketMakingOrder(Exception):
+    pass

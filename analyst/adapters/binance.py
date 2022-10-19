@@ -1,19 +1,28 @@
+import asyncio
 import hashlib
 import hmac
 import json
+import logging
 from copy import deepcopy
 from datetime import datetime, timedelta
+from logging import getLogger
 from time import sleep
-from typing import List
+from typing import Dict, List, Optional
 from urllib.parse import urlencode
 
-import requests
+import aiohttp
+import websockets
 from pandas import DataFrame, DatetimeIndex
-from pydantic import BaseModel, Field, root_validator
-from websocket import create_connection
+from pydantic import BaseModel, Field
 
 from analyst.adapters.types import ParamsDict
 from analyst.crypto.exceptions import BinanceError, InvalidInterval, WrongDatetimeRange
+
+logger = getLogger("adapters.binance")
+
+
+class BinanceWebSocketConnectionClosed(Exception):
+    pass
 
 
 class BinanceWeights(BaseModel):
@@ -68,22 +77,32 @@ class BinanceAdapter:
     def __init__(self, settings):
         self.settings = settings
 
-        self.session = requests.Session()
-        self.session.headers.update({"X-MBX-APIKEY": self.settings.api_key})
+    async def get_session(self):
+        session = aiohttp.ClientSession()
+        session.headers.update({"X-MBX-APIKEY": self.settings.api_key})
 
-        self.setup_weight()
+        return session
 
-    def setup_weight(self):
-        metadata = self.get_metadata()
+    def _get_signature(self, params: ParamsDict):
+        return hmac.new(
+            self.settings.secret_key.encode("utf-8"),
+            urlencode(params).encode("utf-8"),
+            hashlib.sha256,
+        ).hexdigest()
+
+    async def setup_weight(self):
+        metadata = await self.get_metadata()
+
+        logger.debug(f"weight setup: {metadata.weights}")
 
         self.weights = metadata.weights
         self._next_weight_reset = None
 
-    def add_weight(self, weight):
+    async def add_weight(self, weight):
         if (
             self.weights + weight + 1
         ).amount >= self.api_weight_threshold and not self._next_weight_reset:
-            metadata = self.get_metadata()
+            metadata = await self.get_metadata()
 
             self.weights = metadata.weights
 
@@ -99,6 +118,8 @@ class BinanceAdapter:
 
             self.weights.reset()
 
+            logger.debug(f"weight threshold reached ({self.api_weight_threshold}), sleep and reset")
+
             if to_wait > 0:
                 sleep(to_wait)
 
@@ -106,25 +127,19 @@ class BinanceAdapter:
 
         self.weights += weight
 
-    def _get_signature(self, params):
-        return hmac.new(
-            self.settings.secret_key.encode("utf-8"),
-            urlencode(params).encode("utf-8"),
-            hashlib.sha256,
-        ).hexdigest()
-
-    def get_account_info(self):
+    async def get_account_info(self):
         params = {"timestamp": datetime.now().strftime("%s000")}
 
         params["signature"] = self._get_signature(params)
 
-        self.add_weight(10)
+        await self.add_weight(10)
 
-        response = self.session.get(f"{self.settings.api_url}/api/v3/account", params=params)
+        async with await self.get_session() as session:
+            response = await session.get(f"{self.settings.api_url}/api/v3/account", params=params)
 
-        return response.json()
+            return await response.json()
 
-    def create_order(
+    async def create_order(
         self,
         symbol: str,
         side: str,
@@ -156,41 +171,126 @@ class BinanceAdapter:
         if price:
             params["price"] = price
         if stop_price:
-            params["stop¨rice"] = stop_price
+            params["stopPrice"] = stop_price
 
         params["signature"] = self._get_signature(params)
 
-        self.add_weight(1)
+        await self.add_weight(1)
 
-        if not real:
-            response = self.session.post(f"{self.settings.api_url}/api/v3/order/test", params=params)
-        else:
-            response = self.session.post(f"{self.settings.api_url}/api/v3/order", params=params)
+        async with await self.get_session() as session:
+            if not real:
+                response = await session.post(f"{self.settings.api_url}/api/v3/order/test", params=params)
+            else:
+                response = await session.post(f"{self.settings.api_url}/api/v3/order", params=params)
 
-        return response.json()
+        json_data = await response.json()
 
-    def get_exchange_info(self):
-        self.add_weight(10)
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug(f"create order: sending {json.dumps(params, indent=4)}")
+            logger.debug(f"create order: get {json.dumps(json_data, indent=4)}")
 
-        return self.session.get(f"{self.settings.api_url}/api/v3/exchangeInfo").json()
+        return json_data
 
-    def get_metadata(self):
-        response = self.session.get(f"{self.settings.api_url}/api/v3/time")
+    async def get_order(self, symbol: str, order_id: int):
+        params: ParamsDict = {
+            "symbol": symbol,
+            "orderId": order_id,
+            "timestamp": datetime.now().strftime("%s000"),
+        }
+        params["signature"] = self._get_signature(params)
+
+        await self.add_weight(2)
+
+        async with await self.get_session() as session:
+            response = await session.get(self.settings.api_url + "/api/v3/order", params=params)
+
+        return await response.json()
+
+    async def list_orders(self, symbol: str):
+        params: ParamsDict = {"symbol": symbol, "timestamp": datetime.now().strftime("%s000")}
+        params["signature"] = self._get_signature(params)
+
+        await self.add_weight(10)
+
+        async with await self.get_session() as session:
+            response = await session.get(self.settings.api_url + "/api/v3/allOrders", params=params)
+
+        return await response.json()
+
+    async def cancel_order(self, symbol: str, order_id: int):
+        params: ParamsDict = {
+            "symbol": symbol,
+            "orderId": order_id,
+            "timestamp": datetime.now().strftime("%s000"),
+        }
+        params["signature"] = self._get_signature(params)
+
+        await self.add_weight(1)
+
+        async with await self.get_session() as session:
+            response = await session.delete(self.settings.api_url + "/api/v3/order", params=params)
+
+        return await response.json()
+
+    async def get_exchange_info(self):
+        await self.add_weight(10)
+
+        async with await self.get_session() as session:
+            response = await session.get(f"{self.settings.api_url}/api/v3/exchangeInfo")
+
+            return await response.json()
+
+    async def get_metadata(self):
+        async with await self.get_session() as session:
+            response = await session.get(f"{self.settings.api_url}/api/v3/time")
+
+            data = await response.json()
 
         return BinanceMetadata(
-            server_time=response.json().get("serverTime"),
+            server_time=data.get("serverTime"),
             weights={k: v for k, v in response.headers.items() if k.startswith("x-mbx-used")},
         )
 
-    def get_time(self):
-        self.add_weight(1)
+    async def get_prices(self) -> dict:
+        await self.add_weight(2)
 
-        return self._get_time()
+        async with await self.get_session() as session:
+            response = await session.get(f"{self.settings.api_url}/api/v3/ticker/bookTicker")
 
-    def get_prices(self) -> dict:
-        self.add_weight(2)
+            return await response.json()
 
-        return self.session.get(f"{self.settings.api_url}/api/v3/ticker/bookTicker").json()
+    #
+    # User Data Streams methods
+    # to setup account/balance/order update streams
+    #
+
+    async def request_listen_key(self) -> str:
+        await self.add_weight(1)
+
+        async with await self.get_session() as session:
+            response = await session.post(f"{self.settings.api_url}/api/v3/userDataStream")
+
+            return (await response.json())["listenKey"]
+
+    async def keep_alive_listen_key(self, listen_key: str) -> str:
+        await self.add_weight(1)
+
+        async with await self.get_session() as session:
+            response = await session.put(
+                f"{self.settings.api_url}/api/v3/userDataStream", params={"listenKey": listen_key}
+            )
+
+            return await response.json()
+
+    async def close_listen_key(self, listen_key: str) -> str:
+        await self.add_weight(1)
+
+        async with await self.get_session() as session:
+            response = await session.delete(
+                f"{self.settings.api_url}/api/v3/userDataStream", params={"listenKey": listen_key}
+            )
+
+            return await response.json()
 
     def _get_shift_delta(self, interval: str) -> timedelta:
         unit_value, interval_unit = interval[:-1], interval[-1]
@@ -208,7 +308,17 @@ class BinanceAdapter:
 
         raise InvalidInterval(interval)
 
-    def get_historical_klines(
+    async def get_order_book(self, symbol: str):
+        async with await self.get_session() as session:
+            await self.add_weight(1)
+
+            response = await session.get(
+                f"{self.settings.api_url}/api/v3/depth", params={"symbol": symbol}
+            )
+
+            return await response.json()
+
+    async def get_historical_klines(
         self,
         symbol: str,
         interval: str = "1d",
@@ -236,24 +346,25 @@ class BinanceAdapter:
             "limit": 1000,
         }
 
-        while True:
-            self.add_weight(1)
-            klines_part = self.session.get(
-                f"{self.settings.api_url}/api/v3/klines", params=params
-            ).json()
+        async with await self.get_session() as session:
+            while True:
+                await self.add_weight(1)
 
-            if klines_part == []:
-                break
+                response = await session.get(f"{self.settings.api_url}/api/v3/klines", params=params)
+                klines_part = await response.json()
 
-            if not isinstance(klines_part, list):
-                raise BinanceError(klines_part)
+                if klines_part == []:
+                    break
 
-            klines += klines_part
+                if not isinstance(klines_part, list):
+                    raise BinanceError(klines_part)
 
-            if datetime.fromtimestamp((klines_part[-1][0]) / 1000) >= end_datetime:
-                break
+                klines += klines_part
 
-            params["startTime"] = klines_part[-1][0] + 1000
+                if datetime.fromtimestamp((klines_part[-1][0]) / 1000) >= end_datetime:
+                    break
+
+                params["startTime"] = klines_part[-1][0] + 1000
 
         df = DataFrame(
             [
@@ -281,6 +392,7 @@ class BinanceAdapter:
         return df
 
 
+""" TODO remove if not used 09/2022
 class Kline(BaseModel):
     symbol: str
     time: datetime
@@ -327,33 +439,62 @@ class Ticker(BaseModel):
             "best_bid_quantity": v["B"],
             "trades": v["n"],
         }
+"""
 
 
 class BinanceWebSocketAdapter:
-    endpoint = "wss://stream.binance.com:443/stream"
+    def __init__(self, settings):
+        self.settings = settings
 
-    def __init__(self):
-        self.session = None
+    async def open(self, endpoint: str):
+        return await websockets.connect(endpoint)  # type: ignore
+
+    async def close(self, session):
+        await session.close()
+
+    async def send(self, session, data: dict):
+        await session.send(json.dumps(data))
+
+    async def receive(self, session, timeout: Optional[int] = 1) -> Optional[Dict]:
+        try:
+            data = await asyncio.wait_for(session.recv(), timeout=timeout)
+
+            return json.loads(data)
+        except asyncio.TimeoutError:
+            return None
+
+
+class BinanceMarketWebSocketAdapter(BinanceWebSocketAdapter):
+    def __init__(self, *args, **kwargs):
+        super(BinanceMarketWebSocketAdapter, self).__init__(*args, **kwargs)
+
         self.subscriptions = set()
 
-    def open(self):
-        self.session = create_connection(self.endpoint)
+    async def open(self):
+        session = await super().open(self.settings.stream_url)
+
         self.subscriptions = set()
 
-    def close(self):
-        self.session.close()
+        return session
+
+    async def reopen(self):
+        current_subscriptions = self.subscriptions
+
+        session = await self.open()
+
+        await self.subscribe(session, current_subscriptions)
+
+        return session
+
+    async def close(self, session):
+        await super().close(session)
+
         self.subscriptions = set()
 
-    def send(self, data: dict):
-        self.session.send(json.dumps(data))
+    async def request_subscriptions_list(self, session):
+        await self.send(session, {"method": "LIST_SUBSCRIPTIONS", "id": 3})
 
-    def receive(self) -> dict:
-        return json.loads(self.session.recv())
-
-    def request_subscriptions_list(self):
-        self.send({"method": "LIST_SUBSCRIPTIONS", "id": 3})
-
-    def subscribe(self, streams: List[str]):
+    async def subscribe(self, session, streams: List[str]):
         subscribe_to = []
 
         for stream in streams:
@@ -363,10 +504,9 @@ class BinanceWebSocketAdapter:
                 self.subscriptions.add(stream)
 
         if subscribe_to:
-            print("SUB", subscribe_to)
-            self.send({"method": "SUBSCRIBE", "params": subscribe_to, "id": 1})
+            await self.send(session, {"method": "SUBSCRIBE", "params": subscribe_to, "id": 1})
 
-    def unsubscribe(self, streams: List[str]):
+    async def unsubscribe(self, session, streams: List[str]):
         unsubscribe_to = []
 
         for stream in streams:
@@ -376,13 +516,18 @@ class BinanceWebSocketAdapter:
                 self.subscriptions.remove(stream)
 
         if unsubscribe_to:
-            self.send({"method": "UNSUBSCRIBE", "params": unsubscribe_to, "id": 312})
+            await self.send(session, {"method": "UNSUBSCRIBE", "params": unsubscribe_to, "id": 312})
 
-    def listen(self):
-        while True:
-            data = self.receive()
 
-            # if data.get("id") == 3:
-            #    print(data)
+class BinanceUserDataWebSocketAdapter(BinanceWebSocketAdapter):
+    def __init__(self, *args, **kwargs):
+        super(BinanceUserDataWebSocketAdapter, self).__init__(*args, **kwargs)
 
-            yield data
+        self.listen_key = None
+
+    async def open(self, listen_key: str):
+        session = await super().open(self.settings.stream_url + f"?streams={listen_key}")
+
+        self.listen_key = listen_key
+
+        return session

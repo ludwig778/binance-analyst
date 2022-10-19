@@ -1,5 +1,9 @@
+from logging import getLogger
+
 from hartware_lib.adapters.directory import DirectoryAdapter
 from pandas import DataFrame, read_json, to_datetime
+
+logger = getLogger(__name__)
 
 
 class LocalFileAdapter(DirectoryAdapter):

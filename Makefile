@@ -1,6 +1,6 @@
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
 
-TEST_ARGS = -vvss
+TEST_ARGS = -vvss --show-capture=no
 
 
 default: py
@@ -12,7 +12,11 @@ py:
 	poetry run ipython3 -i startup.py ${ARGS}
 
 jupyter:
-	poetry run jupyter notebook --allow-root --ip 0.0.0.0
+	poetry install
+	PYTHONPATH=/app poetry run jupyter notebook --allow-root --ip 0.0.0.0
+
+run_bot:
+	PYTHONUNBUFFERED=1 PYTHONPATH=/app poetry run python3 analyst/bot/bot.py
 
 update_test_cache:
 	poetry run python3 update_test_cache.py
@@ -24,7 +28,7 @@ isort:
 	isort .
 
 black:
-	black --line-length 104 .
+	black --line-length 106 .
 
 mypy:
 	mypy analyst
